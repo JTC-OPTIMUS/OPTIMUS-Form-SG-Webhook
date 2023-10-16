@@ -18,7 +18,7 @@ const formSecretKey = process.env.FORM_SECRET_KEY
 const HAS_ATTACHMENTS = false
 
 app.post(
-    '/api/idd_formsg_webhook_email',
+    '/idd_formsg_webhook_email',
     // Endpoint authentication by verifying signatures
     function (req, res, next) {
         try {
