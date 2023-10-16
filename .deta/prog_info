@@ -1,0 +1,1 @@
+{"id":"f00caaff-569a-4d33-9534-3443568e03df","space":33733,"runtime":"nodejs14.x","name":"first_micro","path":"qx5aa8","project":"c0ntvspp","account":"144798365827","region":"ap-southeast-1","deps":["express@^4.18.1","@opengovsg/formsg-sdk@^0.9.0","nodemailer@^6.8.0"],"envs":["FORM_SECRET_KEY"],"public":true,"log_level":"debug","cron":""}
