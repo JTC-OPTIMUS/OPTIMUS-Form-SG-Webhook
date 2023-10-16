@@ -9,7 +9,7 @@ const formsg = require('@opengovsg/formsg-sdk')()
 
 // This is where your domain is hosted, and should match
 // the URI supplied to FormSG in the form dashboard
-const POST_URI = 'https://qx5aa8.deta.dev/idd_formsg_webhook_email'
+const POST_URI = 'https://optimus-ivory.vercel.app/api/idd_formsg_webhook_email'
 
 // Your form's secret key downloaded from FormSG upon form creation
 const formSecretKey = process.env.FORM_SECRET_KEY
@@ -18,7 +18,7 @@ const formSecretKey = process.env.FORM_SECRET_KEY
 const HAS_ATTACHMENTS = false
 
 app.post(
-    '/idd_formsg_webhook_email',
+    '/api/idd_formsg_webhook_email',
     // Endpoint authentication by verifying signatures
     function (req, res, next) {
         try {
