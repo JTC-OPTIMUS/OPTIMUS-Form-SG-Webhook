@@ -58,6 +58,7 @@ app.post(
       console.log('Nodemailer is running');
       const formSGResponse = JSON.parse(submission);
       let officerName = 'Officer Name not found';
+      console.log(formSGResponse.responses);
       try {
         officerName = formSGResponse.responses[1].answer
           .split('@')[0]
