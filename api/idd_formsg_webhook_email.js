@@ -66,6 +66,7 @@ app.post(
           pass: '0ptimusjtc',
         },
       });
+      console.log(transporter);
       transporter.sendMail(mailOptions, (err) => {
         if (err) {
           console.log('Error occurs', err);
