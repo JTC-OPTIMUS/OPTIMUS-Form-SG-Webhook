@@ -56,10 +56,10 @@ app.post(
         process.exit(e.code);
       }
       console.log('Nodemailer is running');
-      const formSGResponse = JSON.parse(submission);
+      const formSGResponse = await JSON.stringify(submission);
       let officerName = 'Officer Name not found';
-      console.log(formSGResponse);
-      console.log(formSGResponse.responses);
+      console.log('test1:' + formSGResponse);
+      console.log('test2:' + formSGResponse.responses);
       console.log(officerName)
       try {
         officerName = formSGResponse.responses[1].answer
@@ -196,7 +196,7 @@ app.post(
         });
       });
 
-      console.log('This is submission' + JSON.stringify(submission));
+      // console.log('This is submission' + JSON.stringify(submission));
       return res.status(200).send({ message: 'See console for submission!' });
     } else {
       return res
