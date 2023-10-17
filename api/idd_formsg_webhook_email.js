@@ -66,17 +66,30 @@ app.post(
           pass: 'hfhjkvuushpgrjud',
         },
       });
-      const info = await transporter.sendMail(mailOptions, (err) => {
-        if (err) {
-          console.log('Error occurs', err);
-          return res.status(500).send({ message: 'Error sending email' });
-        } else {
-          console.log('Email sent!');
-          return res.status(200).send({ message: 'Email sent successfully!' });
-        }
+      await new Promise((resolve, reject) => {
+        // verify connection configuration
+        transporter.verify(function (error, success) {
+          if (error) {
+            console.log(error);
+            reject(error);
+          } else {
+            console.log('Server is ready to take our messages');
+            resolve(success);
+          }
+        });
       });
-
-      console.log(info)
+      await new Promise((resolve, reject) => {
+        // send mail
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            console.log('Email sent!');
+            resolve(info);
+          }
+        });
+      });
 
       console.log('This is submission' + JSON.stringify(submission));
       return res.status(200).send({ message: 'See console for submission!' });
