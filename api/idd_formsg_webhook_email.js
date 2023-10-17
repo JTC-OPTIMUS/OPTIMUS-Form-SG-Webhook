@@ -14,9 +14,11 @@ const POST_URI =
 
 // Your form's secret key downloaded from FormSG upon form creation
 const formSecretKey = process.env.FORM_SECRET_KEY;
+console.log('This is formSecretKey' + formSecretKey);
 
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
+console.log('checkpoint 1')
 
 app.post(
   '/api/idd_formsg_webhook_email',
