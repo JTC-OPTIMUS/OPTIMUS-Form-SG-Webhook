@@ -66,7 +66,7 @@ app.post(
           pass: 'hfhjkvuushpgrjud',
         },
       });
-      await transporter.sendMail(mailOptions, (err) => {
+      const info = await transporter.sendMail(mailOptions, (err) => {
         if (err) {
           console.log('Error occurs', err);
           return res.status(500).send({ message: 'Error sending email' });
@@ -75,6 +75,8 @@ app.post(
           return res.status(200).send({ message: 'Email sent successfully!' });
         }
       });
+
+      console.log(info)
 
       console.log('This is submission' + JSON.stringify(submission));
       return res.status(200).send({ message: 'See console for submission!' });
