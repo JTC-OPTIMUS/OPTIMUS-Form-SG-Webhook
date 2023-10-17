@@ -58,7 +58,7 @@ app.post(
       const formSGResponse = submission;
       let officerName = 'Officer Name not found';
       console.log('test1:' + formSGResponse);
-      console.log('test2:' + formSGResponse.responses);
+      console.log('test2:' + formSGResponse.responses[2].answer);
       console.log(officerName)
       try {
         officerName = formSGResponse.responses[1].answer
