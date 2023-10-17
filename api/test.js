@@ -17,7 +17,7 @@ const formSecretKey = process.env.FORM_SECRET_KEY;
 
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
-
+console.log('checkpoint 0');
 app.post(
   '/api/idd_formsg_webhook_email',
   // Endpoint authentication by verifying signatures
