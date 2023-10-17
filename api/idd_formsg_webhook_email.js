@@ -1,43 +1,43 @@
-// This example uses Express to receive webhooks
-// https://stackoverflow.com/questions/27599614/var-express-requireexpress-var-app-express-what-is-express-is-it
+// Import the required dependencies
 const express = require('express');
-require('dotenv').config();
+require('dotenv').config(); // Load environment variables from a .env file
 const app = express();
 
-// Instantiating formsg-sdk without parameters default to using the package's
-// production public signing key.
+// Import the FormSG SDK and initialize it
 const formsg = require('@opengovsg/formsg-sdk')();
 
-// This is where your domain is hosted, and should match
-// the URI supplied to FormSG in the form dashboard
+// Define the URL where this webhook is hosted
 const POST_URI =
   'https://optimus-ivory.vercel.app/api/idd_formsg_webhook_email';
 
-// Your form's secret key downloaded from FormSG upon form creation
+// Retrieve the form's secret key from environment variables
 const formSecretKey = process.env.FORM_SECRET_KEY;
 
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
 
+// Function to capitalize the first letter of a word
 function capitalizeFirstLetter(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+// Define a POST route for the webhook
 app.post(
   '/api/idd_formsg_webhook_email',
-  // Endpoint authentication by verifying signatures
+  // Middleware for endpoint authentication by verifying signatures
   function (req, res, next) {
     try {
       formsg.webhooks.authenticate(req.get('X-Formsg-Signature'), POST_URI);
       // Continue processing the POST body
       return next();
     } catch (e) {
-      return res.status(401).send({ message: 'Unauthorized' })
+      // Unauthorized request
+      return res.status(401).send({ message: 'Unauthorized' });
     }
   },
-  // Parse JSON from raw request body
+  // Middleware to parse JSON from the raw request body
   express.json(),
-  // Decrypt the submission
+  // Middleware to decrypt the submission
   async function (req, res, next) {
     // If `verifiedContent` is provided in `req.body.data`, the return object
     // will include a verified key.
@@ -47,17 +47,24 @@ app.post(
 
     // If the decryption failed, submission will be `null`.
     if (submission) {
+      // Import Nodemailer for sending emails
       const nodemailer = require('nodemailer');
+
+      // Check if Nodemailer is installed
       try {
         console.log(require.resolve('nodemailer'));
       } catch (e) {
         console.error('nodemailer is not found');
         process.exit(e.code);
       }
+
       console.log('Nodemailer is running');
+
+      // Extract data from the FormSG submission
       const formSGResponse = submission;
       let officerName = 'Officer Name not found';
       try {
+        // Extract and format the officer's name
         officerName = formSGResponse.responses[1].answer
           .split('@')[0]
           .split('_')
@@ -67,34 +74,40 @@ app.post(
         officerName = 'Officer Name not found';
       }
 
+      // Extract division information
       let formDivision = 'Division not found';
       try {
         formDivision = formSGResponse.responses[2].answer;
-        if (formDivision.includes('Other')){
+        if (formDivision.includes('Other')) {
           formDivision = formSGResponse.responses[3].answer;
         }
       } catch (e) {
         formDivision = 'Division not found';
       }
 
+      // Extract project type information
       let formProjectType = 'Project Type not found';
       try {
         formProjectType = formSGResponse.responses[8].answer;
-        if (formProjectType.includes('Other')){
+        if (formProjectType.includes('Other')) {
           formProjectType = formSGResponse.responses[9].answer;
         }
-      }
-      catch (e) {
+      } catch (e) {
         formProjectType = 'Project Type not found';
       }
 
+      // List of email recipients
+      const mailList = ['xianghui556@gmail.com'
+      ];
+
+      // Email configuration
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
-        to: 'xianghui556@gmail.com',
+        to: mailList,
         subject: 'OPTIMUS - JTC IDD Alert',
         html: `<div style="border: 1px solid black; padding: 10px; border-radius:10px;">
         <h1>
-            JTC IDD Alert</h1>
+            NEW JTC IDD Alert</h1>
         <div style="display: flex; justify-content: center; align-items: center;">
             <table style="border-collapse: collapse; border: 1px solid black; border-radius: 5px;">
                 <tr>
@@ -156,10 +169,11 @@ app.post(
                     <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[16].answer}</td>
                 </tr>
             </table>
-        </div>
-    
-    </div>`,
+          </div>
+        </div>`,
       };
+
+      // Create a transporter for sending emails
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -167,8 +181,9 @@ app.post(
           pass: 'hfhjkvuushpgrjud',
         },
       });
+
+      // Verify the email server's configuration
       await new Promise((resolve, reject) => {
-        // verify connection configuration
         transporter.verify(function (error, success) {
           if (error) {
             console.log(error);
@@ -179,8 +194,9 @@ app.post(
           }
         });
       });
+
+      // Send the email
       await new Promise((resolve, reject) => {
-        // send mail
         transporter.sendMail(mailOptions, (err, info) => {
           if (err) {
             console.error(err);
@@ -192,13 +208,11 @@ app.post(
         });
       });
 
-      // console.log('This is submission' + JSON.stringify(submission));
       return res.status(200).send({ message: 'See console for submission!' });
     } else {
       return res
         .status(200)
         .send({ message: 'Could not decrypt the submission' });
-      // Could not decrypt the submission
     }
   }
 );
