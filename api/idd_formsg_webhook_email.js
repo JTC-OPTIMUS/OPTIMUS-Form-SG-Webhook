@@ -68,9 +68,11 @@ app.post(
       });
       transporter.sendMail(mailOptions, (err) => {
         if (err) {
-          return console.log('Error occurs', err);
+          console.log('Error occurs', err);
+          return res.status(500).send({ message: 'Error sending email' });
         } else {
-          return console.log('Email sent!');
+          console.log('Email sent!');
+          return res.status(200).send({ message: 'Email sent successfully!' });
         }
       });
 
