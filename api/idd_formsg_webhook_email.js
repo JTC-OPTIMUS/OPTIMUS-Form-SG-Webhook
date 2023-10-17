@@ -18,7 +18,10 @@ const formSecretKey = process.env.FORM_SECRET_KEY;
 
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
-console.log('checkpoint 1');
+
+function capitalizeFirstLetter(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
 
 app.post(
   '/api/idd_formsg_webhook_email',
@@ -54,15 +57,108 @@ app.post(
       }
       console.log('Nodemailer is running');
       const formSGResponse = JSON.stringify(submission);
+      let officerName = 'Officer Name not found';
+      try {
+        officerName = formSGResponse.responses[1].answer
+          .split('@')[0]
+          .split('_')
+          .map(capitalizeFirstLetter)
+          .join(' ');
+      } catch (e) {
+        officerName = 'Officer Name not found';
+      }
+
+      let formDivision = 'Division not found';
+      try {
+        formDivision = formSGResponse.responses[2].answer;
+        if (formDivision.includes('Other')){
+          formDivision = formSGResponse.responses[3].answer;
+        }
+      } catch (e) {
+        formDivision = 'Division not found';
+      }
+
+      let formProjectType = 'Project Type not found';
+      try {
+        formProjectType = formSGResponse.responses[8].answer;
+        if (formProjectType.includes('Other')){
+          formProjectType = formSGResponse.responses[9].answer;
+        }
+      }
+      catch (e) {
+        formProjectType = 'Project Type not found';
+      }
+
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
         to: 'xianghui556@gmail.com',
         subject: 'Nodemailer Testing',
-        html: 
-        `<div style="border: 1px solid black; padding: 10px; text-align: center; justify-content: center; align-items: center; border-radius:10px;;">
+        html: `<div style="border: 1px solid black; padding: 10px; text-align: center; justify-content: center; align-items: center; border-radius:10px;">
         <h1>
             JTC IDD Alert</h1>
-        <p>${formSGResponse}</p>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <table style="border-collapse: collapse; width: 80%; border: 1px solid black; border-radius: 5px;">
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">
+                        Officer Name</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${officerName}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Division</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formDivision}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Email</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[1].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Title</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[6].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Scope</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[7].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Type</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formProjectType}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">PROMPT Project ID</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[5].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project SUM</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[10].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Design Duration (Months)</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[12].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Construction Duration (Months)
+                    </th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[13].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Construction Commencement Date</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[14].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Current Project Stage</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[11].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">EIR Issued</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[15].answer}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Additional Remarks</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[16].answer}</td>
+                </tr>
+            </table>
+        </div>
+    
     </div>`,
       };
       const transporter = nodemailer.createTransport({
