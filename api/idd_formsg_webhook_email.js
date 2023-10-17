@@ -56,7 +56,7 @@ app.post(
         process.exit(e.code);
       }
       console.log('Nodemailer is running');
-      const formSGResponse = JSON.stringify(submission);
+      const formSGResponse = JSON.parse(submission);
       let officerName = 'Officer Name not found';
       try {
         officerName = formSGResponse.responses[1].answer
@@ -92,7 +92,7 @@ app.post(
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
         to: 'xianghui556@gmail.com',
-        subject: 'Nodemailer Testing',
+        subject: 'OPTIMUS - JTC IDD Alert',
         html: `<div style="border: 1px solid black; padding: 10px; text-align: center; justify-content: center; align-items: center; border-radius:10px;">
         <h1>
             JTC IDD Alert</h1>
