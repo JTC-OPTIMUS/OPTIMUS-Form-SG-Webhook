@@ -55,7 +55,7 @@ app.post(
       }
       console.log('Nodemailer is running');
       const msg = {
-        from: 'jtcoptimus@gmail.com',
+        from: 'raycrafter995@gmail.com',
         to: 'xianghui556@gmail.com',
         subject: 'Nodemailer Testing',
         text: 'Testing' + JSON.stringify(submission),
