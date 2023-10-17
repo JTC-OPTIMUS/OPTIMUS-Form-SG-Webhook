@@ -97,13 +97,14 @@ app.post(
       }
 
       // List of email recipients
-      const mailList = ['xianghui556@gmail.com'
-      ];
+      const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
+      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
 
       // Email configuration
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
         to: mailList,
+        cc: ccList,
         subject: 'OPTIMUS - JTC IDD Alert',
         html: `<div style="border: 1px solid black; padding: 10px; border-radius:10px;">
         <h1>
