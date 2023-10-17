@@ -54,12 +54,17 @@ app.post(
       }
       console.log('Nodemailer is running');
       const formSGResponse = JSON.stringify(submission);
+      const messageFormating = (
+        <div style={{ boxShadow: '0 0 10px rgba(255, 255, 255, 0.6)' }}>
+          <h1>Testing</h1>
+          <p>${formSGResponse}</p>
+        </div>
+      );
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
         to: 'xianghui556@gmail.com',
         subject: 'Nodemailer Testing',
-        html: `<h1>Testing</h1>
-        <p>${formSGResponse}</p>`,
+        html: messageFormating,
       };
       const transporter = nodemailer.createTransport({
         service: 'gmail',
