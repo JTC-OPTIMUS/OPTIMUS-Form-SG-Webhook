@@ -59,7 +59,11 @@ app.post(
         to: 'xianghui556@gmail.com',
         subject: 'Nodemailer Testing',
         html: 
-        '<div style={{ boxShadow: "0 0 10px rgba(255, 255, 255, 0.6)"}}><h1>Testing</h1><p>${formSGResponse}</p></div>',
+        `<div style="border: 1px solid black; padding: 10px; text-align: center; justify-content: center; align-items: center; border-radius:10px;;">
+        <h1>
+            JTC IDD Alert</h1>
+        <p>${formSGResponse}</p>
+    </div>`,
       };
       const transporter = nodemailer.createTransport({
         service: 'gmail',
