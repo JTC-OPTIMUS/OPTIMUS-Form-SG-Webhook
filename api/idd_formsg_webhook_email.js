@@ -1,6 +1,7 @@
 // This example uses Express to receive webhooks
 // https://stackoverflow.com/questions/27599614/var-express-requireexpress-var-app-express-what-is-express-is-it
 const express = require('express');
+require('dotenv').config();
 const app = express();
 
 // Instantiating formsg-sdk without parameters default to using the package's
