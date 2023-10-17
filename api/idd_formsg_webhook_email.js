@@ -15,7 +15,6 @@ const POST_URI =
 
 // Your form's secret key downloaded from FormSG upon form creation
 const formSecretKey = process.env.FORM_SECRET_KEY;
-console.log('This is formSecretKey' + formSecretKey);
 
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
@@ -77,9 +76,7 @@ app.post(
 
       console.log('This is submission' + JSON.stringify(submission));
       return res.status(200).send({ message: 'See console for submission!' });
-      // Continue processing the submission
     } else {
-      // console.log('This is submission' + JSON.stringify(submission))
       return res
         .status(200)
         .send({ message: 'Could not decrypt the submission' });
