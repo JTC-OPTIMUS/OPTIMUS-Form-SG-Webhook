@@ -32,8 +32,7 @@ app.post(
       // Continue processing the POST body
       return next();
     } catch (e) {
-      return next();
-      // return res.status(401).send({ message: 'Unauthorized' })
+      return res.status(401).send({ message: 'Unauthorized' })
     }
   },
   // Parse JSON from raw request body
@@ -56,7 +55,7 @@ app.post(
         process.exit(e.code);
       }
       console.log('Nodemailer is running');
-      const formSGResponse = await JSON.stringify(submission);
+      const formSGResponse = submission;
       let officerName = 'Officer Name not found';
       console.log('test1:' + formSGResponse);
       console.log('test2:' + formSGResponse.responses);
