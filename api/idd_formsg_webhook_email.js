@@ -19,7 +19,7 @@ console.log('This is formSecretKey' + formSecretKey);
 
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
-console.log('checkpoint 1')
+console.log('checkpoint 1');
 
 app.post(
   '/api/idd_formsg_webhook_email',
@@ -54,30 +54,26 @@ app.post(
         process.exit(e.code);
       }
       console.log('Nodemailer is running');
-      const msg = {
-        from: 'raycrafter995@gmail.com',
+      const mailOptions = {
+        from: 'jtcoptimus@gmail.com',
         to: 'xianghui556@gmail.com',
         subject: 'Nodemailer Testing',
         text: 'Testing' + JSON.stringify(submission),
       };
-      const transporter = nodemailer
-        .createTransport({
-          service: 'gmail',
-          auth: {
-            user: 'raycrafter995@gmail.com',
-            pass: '81681652',
-          },
-          port: 587,
-          host: 'smtp.gmail.com',
-          // secure: true
-        })
-        .sendMail(msg, (err) => {
-          if (err) {
-            return console.log('Error occurs', err);
-          } else {
-            return console.log('Email sent!');
-          }
-        });
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'jtcoptimus@gmail.com',
+          pass: '0ptimusjtc',
+        },
+      });
+      transporter.sendMail(mailOptions, (err) => {
+        if (err) {
+          return console.log('Error occurs', err);
+        } else {
+          return console.log('Email sent!');
+        }
+      });
 
       console.log('This is submission' + JSON.stringify(submission));
       return res.status(200).send({ message: 'See console for submission!' });
