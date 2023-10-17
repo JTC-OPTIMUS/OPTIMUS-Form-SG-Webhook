@@ -64,8 +64,8 @@ app.post(
         .createTransport({
           service: 'gmail',
           auth: {
-            user: 'jtcoptimus@gmail.com',
-            pass: '0ptimusjtc',
+            user: 'raycrafter995@gmail.com',
+            pass: '81681652',
           },
           port: 587,
           host: 'smtp.gmail.com',
