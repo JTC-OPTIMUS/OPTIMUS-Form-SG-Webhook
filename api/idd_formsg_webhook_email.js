@@ -27,8 +27,7 @@ app.post(
       // Continue processing the POST body
       return next();
     } catch (e) {
-      return next();
-      // return res.status(401).send({ message: 'Unauthorized' })
+      return res.status(401).send({ message: 'Unauthorized' })
     }
   },
   // Parse JSON from raw request body
