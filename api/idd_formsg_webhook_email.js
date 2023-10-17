@@ -63,12 +63,12 @@ app.post(
         service: 'gmail',
         auth: {
           user: 'jtcoptimus@gmail.com',
-          pass: '0ptimusjtc',
+          pass: 'hfhj kvuu shpg rjud',
         },
         port: 587,
         host: 'smtp.gmail.com',
       });
-      await transporter.sendMail(mailOptions, (err) => {
+      const info = await transporter.sendMail(mailOptions, (err) => {
         if (err) {
           console.log('Error occurs', err);
           return res.status(500).send({ message: 'Error sending email' });
