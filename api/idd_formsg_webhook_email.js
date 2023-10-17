@@ -65,9 +65,10 @@ app.post(
           user: 'jtcoptimus@gmail.com',
           pass: '0ptimusjtc',
         },
+        port: 587,
+        host: 'smtp.gmail.com',
       });
-      console.log(transporter);
-      transporter.sendMail(mailOptions, (err) => {
+      await transporter.sendMail(mailOptions, (err) => {
         if (err) {
           console.log('Error occurs', err);
           return res.status(500).send({ message: 'Error sending email' });
