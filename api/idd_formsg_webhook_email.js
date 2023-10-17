@@ -92,11 +92,11 @@ app.post(
         from: 'jtcoptimus@gmail.com',
         to: 'xianghui556@gmail.com',
         subject: 'OPTIMUS - JTC IDD Alert',
-        html: `<div style="border: 1px solid black; padding: 10px; text-align: center; justify-content: center; align-items: center; border-radius:10px;">
+        html: `<div style="border: 1px solid black; padding: 10px; border-radius:10px;">
         <h1>
             JTC IDD Alert</h1>
         <div style="display: flex; justify-content: center; align-items: center;">
-            <table style="border-collapse: collapse; width: 80%; border: 1px solid black; border-radius: 5px;">
+            <table style="border-collapse: collapse; border: 1px solid black; border-radius: 5px;">
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">
                         Officer Name</th>
