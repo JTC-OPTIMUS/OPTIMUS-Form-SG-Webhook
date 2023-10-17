@@ -53,11 +53,13 @@ app.post(
         process.exit(e.code);
       }
       console.log('Nodemailer is running');
+      const formSGResponse = JSON.stringify(submission);
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
         to: 'xianghui556@gmail.com',
         subject: 'Nodemailer Testing',
-        text: 'Testing' + JSON.stringify(submission),
+        html: `<h1>Testing</h1>
+        <p>${formSGResponse}</p>`,
       };
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -73,7 +75,7 @@ app.post(
             console.log(error);
             reject(error);
           } else {
-            console.log('Server is ready to take our messages');
+            console.log('Server is ready');
             resolve(success);
           }
         });
