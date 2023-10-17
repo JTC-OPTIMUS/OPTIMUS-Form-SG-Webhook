@@ -65,8 +65,6 @@ app.post(
           user: 'jtcoptimus@gmail.com',
           pass: 'hfhjkvuushpgrjud',
         },
-        port: 587,
-        host: 'smtp.gmail.com',
       });
       await transporter.sendMail(mailOptions, (err) => {
         if (err) {
