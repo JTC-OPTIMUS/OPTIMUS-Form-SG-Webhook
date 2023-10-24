@@ -16,6 +16,10 @@ const formSecretKey = process.env.ACCOUNT_FORM_SECRET_KEY;
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
 
+// List of email recipients
+const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
+const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'xianghui556@gmail.com'];
+
 // Define a POST route for the webhook
 app.post(
   '/api/optimus_account_formsg_webhook_email',
@@ -96,10 +100,6 @@ app.post(
         pad(currentdate.getMinutes()) +
         ':' +
         pad(currentdate.getSeconds());
-
-      // List of email recipients
-      const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
 
       // Email configuration
       const mailOptions = {
