@@ -45,18 +45,18 @@ app.post(
       : formsg.crypto.decrypt(formSecretKey, req.body.data);
 
     const formSGResponse = submission.responses;
-    const firstNameText = JSON.stringify(formSGResponse[0].answer);
-    const lastNameText = JSON.stringify(formSGResponse[1].answer);
-    const designationText = JSON.stringify(formSGResponse[2].answer);
-    const emailText = JSON.stringify(formSGResponse[3].answer);
-    const companyText = JSON.stringify(formSGResponse[4].answer);
-    const requestPurposeText = JSON.stringify(formSGResponse[7].answer);
-    const userGroupText = JSON.stringify(formSGResponse[8].answer);
+    const firstNameText = formSGResponse[0].answer;
+    const lastNameText = formSGResponse[1].answer;
+    const designationText = formSGResponse[2].answer;
+    const emailText = formSGResponse[3].answer;
+    const companyText = formSGResponse[4].answer;
+    const requestPurposeText = formSGResponse[7].answer;
+    const userGroupText = formSGResponse[8].answer;
     console.log(formSGResponse[8]);
-    const userRoleText = JSON.stringify(formSGResponse[9].answer);
+    const userRoleText = formSGResponse[9].answer;
     console.log(formSGResponse[9]); 
-    const pdd_swc_groupText = JSON.stringify(formSGResponse[10].answer);
-    const additionalRemarksText = JSON.stringify(formSGResponse[11].answer);
+    const pdd_swc_groupText = formSGResponse[10].answer;
+    const additionalRemarksText = formSGResponse[11].answer;
 
     // Extract division information
     let projectText = 'Project not found';
