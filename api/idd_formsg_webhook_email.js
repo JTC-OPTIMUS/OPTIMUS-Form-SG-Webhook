@@ -102,19 +102,23 @@ app.post(
 
       // Get the current date and time
       const currentdate = new Date();
+      currentdate.setHours(currentdate.getHours() + 8); // Add 8 hours
+
+      const pad = (num) => (num < 10 ? '0' : '') + num; // Function to pad with leading zeros
+
       const datetime =
         'Webhook Time: ' +
-        currentdate.getDate() +
-        '/' +
-        (currentdate.getMonth() + 1) +
-        '/' +
         currentdate.getFullYear() +
+        '-' +
+        pad(currentdate.getMonth() + 1) +
+        '-' +
+        pad(currentdate.getDate()) +
         ' @ ' +
-        currentdate.getHours() +
+        pad(currentdate.getHours()) +
         ':' +
-        currentdate.getMinutes() +
+        pad(currentdate.getMinutes()) +
         ':' +
-        currentdate.getSeconds();
+        pad(currentdate.getSeconds());
 
       // Email configuration
       const mailOptions = {
