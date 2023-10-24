@@ -8,10 +8,10 @@ const formsg = require('@opengovsg/formsg-sdk')();
 
 // Define the URL where this webhook is hosted
 const POST_URI =
-  'https://optimus-ivory.vercel.app/api/idd_formsg_webhook_email';
+  'https://optimus-ivory.vercel.app/api/optimus_account_formsg_webhook_email';
 
 // Retrieve the form's secret key from environment variables
-const formSecretKey = process.env.IDD_FORM_SECRET_KEY;
+const formSecretKey = process.env.ACCOUNT_FORM_SECRET_KEY;
 
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
@@ -23,7 +23,7 @@ function capitalizeFirstLetter(word) {
 
 // Define a POST route for the webhook
 app.post(
-  '/api/idd_formsg_webhook_email',
+  '/api/optimus_account_formsg_webhook_email',
   // Middleware for endpoint authentication by verifying signatures
   function (req, res, next) {
     try {
