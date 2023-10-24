@@ -98,7 +98,7 @@ app.post(
 
       // List of email recipients
       const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'xianghui556@gmail.com'];
+      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
 
       // Get the current date and time
       const currentdate = new Date();

@@ -16,11 +16,6 @@ const formSecretKey = process.env.ACCOUNT_FORM_SECRET_KEY;
 // Set to true if you need to download and decrypt attachments from submissions
 const HAS_ATTACHMENTS = false;
 
-// Function to capitalize the first letter of a word
-function capitalizeFirstLetter(word) {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
 // Define a POST route for the webhook
 app.post(
   '/api/optimus_account_formsg_webhook_email',
@@ -97,10 +92,7 @@ app.post(
 
       // List of email recipients
       const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-      const ccList = [
-        'siti_nurhazirah_mokmin@jtc.gov.sg',
-        'xianghui556@gmail.com',
-      ];
+      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
 
       // Email configuration
       const mailOptions = {
@@ -114,7 +106,7 @@ app.post(
         <h4>${datetime}</h4>
         <div>
             <h4 style="margin: 0;">Response from FormSG is as follows:</h4>
-            <div style="border-bottom: 2px solid black; margin-bottom: 5px"></div><span>Request from ${firstNameText} ${lastNameText} from ${companyText} for ${projectText} was submitted. </span>
+            <div style="border-bottom: 2px solid black; margin-bottom: 5px"></div><span>Request from <b>${firstNameText}</b> <b>${lastNameText}</b> from <b>${companyText}</b> for <b>${projectText}</b> was submitted. </span>
             <div><span>Please refer to FormSG for more information.</span></div>
             <div style="border-top: 2px solid black; text-align: end; margin-top: 5px"><span>Brought to you by the DBE team</span></div>
         </div>
