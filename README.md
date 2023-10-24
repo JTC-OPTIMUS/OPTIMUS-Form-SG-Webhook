@@ -2,9 +2,9 @@
 
 This project includes a set of APIs designed to handle webhook integrations with FormSG submissions. It offers support for two specific FormSG forms:
 
-OPTIMUS Account Request Form Submission Webhook API: This API handles the webhook for submissions of the OPTIMUS account request form. It processes form data, sends email notifications, and performs necessary actions upon submission.
+- OPTIMUS Account Request Form Submission Webhook API: This API handles the webhook for submissions of the OPTIMUS account request form. It processes form data, sends email notifications, and performs necessary actions upon submission.
 
-JTC IDD Form Submission Webhook API: This API manages webhooks for JTC IDD form submissions, decrypting the data and sending email notifications with formatted submission details.
+- JTC IDD Form Submission Webhook API: This API manages webhooks for JTC IDD form submissions, decrypting the data and sending email notifications with formatted submission details.
 
 ## Table of Contents
 
