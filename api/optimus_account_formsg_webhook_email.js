@@ -51,10 +51,8 @@ app.post(
     const emailText = formSGResponse[3].answer;
     const companyText = formSGResponse[4].answer;
     const requestPurposeText = formSGResponse[7].answer;
-    const userGroupText = formSGResponse[8].answer;
-    console.log(formSGResponse[8]);
-    const userRoleText = formSGResponse[9].answer;
-    console.log(formSGResponse[9]); 
+    const userGroupText = formSGResponse[8].answerArray.join(', ')
+    const userRoleText = formSGResponse[9].answerArray.join(', ');
     const pdd_swc_groupText = formSGResponse[10].answer;
     const additionalRemarksText = formSGResponse[11].answer;
 
