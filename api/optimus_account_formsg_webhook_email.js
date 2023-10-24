@@ -51,7 +51,7 @@ app.post(
     const emailText = formSGResponse[3].answer;
     const companyText = formSGResponse[4].answer;
     const requestPurposeText = formSGResponse[7].answer;
-    const userGroupText = formSGResponse[8].answerArray.join(', ')
+    const userGroupText = formSGResponse[8].answerArray;
     const userRoleText = formSGResponse[9].answerArray.join(', ');
     const pdd_swc_groupText = formSGResponse[10].answer;
     const additionalRemarksText = formSGResponse[11].answer;
@@ -142,10 +142,6 @@ app.post(
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Purpose of Request</th>
                     <td style="border: 1px solid black; padding: 5px; text-align: left;">${requestPurposeText}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">User Group</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${userGroupText}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">User Role For Project</th>
