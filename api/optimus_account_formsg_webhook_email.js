@@ -45,6 +45,23 @@ app.post(
       ? await formsg.crypto.decryptWithAttachments(formSecretKey, req.body.data)
       : formsg.crypto.decrypt(formSecretKey, req.body.data);
 
+    const formSGResponse = submission.responses;
+    const firstNameText = JSON.stringify(formSGResponse[0].answer);
+    const lastNameText = JSON.stringify(formSGResponse[1].answer);
+    const emailText = JSON.stringify(formSGResponse[3].answer);
+    const companyText = JSON.stringify(formSGResponse[4].answer);
+
+    // Extract division information
+    let projectText = 'Project not found';
+    try {
+      projectText = formSGResponse[5].answer;
+      if (projectText.includes('Other')) {
+        projectText = formSGResponse[6].answer;
+      }
+    } catch (e) {
+      projectText = 'Division not found';
+    }
+
     // If the decryption failed, submission will be `null`.
     if (submission) {
       // Import Nodemailer for sending emails
@@ -58,120 +75,43 @@ app.post(
         process.exit(e.code);
       }
 
-      console.log('Nodemailer is running');
-
-      // Extract data from the FormSG submission
-      const formSGResponse = submission;
-      let officerName = 'Officer Name not found';
-      try {
-        // Extract and format the officer's name
-        officerName = formSGResponse.responses[1].answer
-          .split('@')[0]
-          .split('_')
-          .map(capitalizeFirstLetter)
-          .join(' ');
-      } catch (e) {
-        officerName = 'Officer Name not found';
-      }
-
-      // Extract division information
-      let formDivision = 'Division not found';
-      try {
-        formDivision = formSGResponse.responses[2].answer;
-        if (formDivision.includes('Other')) {
-          formDivision = formSGResponse.responses[3].answer;
-        }
-      } catch (e) {
-        formDivision = 'Division not found';
-      }
-
-      // Extract project type information
-      let formProjectType = 'Project Type not found';
-      try {
-        formProjectType = formSGResponse.responses[8].answer;
-        if (formProjectType.includes('Other')) {
-          formProjectType = formSGResponse.responses[9].answer;
-        }
-      } catch (e) {
-        formProjectType = 'Project Type not found';
-      }
+      // Get the current date and time
+      const currentdate = new Date();
+      const datetime =
+        'Webhook Time: ' +
+        currentdate.getDate() +
+        '/' +
+        (currentdate.getMonth() + 1) +
+        '/' +
+        currentdate.getFullYear() +
+        ' @ ' +
+        currentdate.getHours() +
+        ':' +
+        currentdate.getMinutes() +
+        ':' +
+        currentdate.getSeconds();
 
       // List of email recipients
       const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
+      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'xianghui556@gmail.com'];
 
       // Email configuration
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
         to: mailList,
         cc: ccList,
-        subject: 'OPTIMUS - JTC IDD Alert',
+        subject: 'OPTIMUS - Account Request Alert',
         html: `<div style="border: 1px solid black; padding: 10px; border-radius:10px;">
         <h1>
-            NEW JTC IDD Alert</h1>
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <table style="border-collapse: collapse; border: 1px solid black; border-radius: 5px;">
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">
-                        Officer Name</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${officerName}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Division</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formDivision}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Email</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[1].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Title</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[6].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Scope</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[7].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Type</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formProjectType}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">PROMPT Project ID</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[5].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project SUM</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[10].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Design Duration (Months)</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[12].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Construction Duration (Months)
-                    </th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[13].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Construction Commencement Date</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[14].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Current Project Stage</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[11].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">EIR Issued</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[15].answer}</td>
-                </tr>
-                <tr>
-                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Additional Remarks</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[16].answer}</td>
-                </tr>
-            </table>
-          </div>
-        </div>`,
+            NEW OPTIMUS Account Request</h1>
+        <h3>${datetime}</h3>
+        <div>
+            <h4 style="margin: 0;">Response from FormSG is as follows:</h4>
+            <div style="border-bottom: 2px solid black; margin-bottom: 5px"></div><span>Request from ${firstNameText} ${lastNameText} from ${companyText} for ${projectText} was submitted. </span>
+            <div><span>Please refer to FormSG for more information.</span></div>
+            <div style="border-top: 2px solid black; text-align: end; margin-top: 5px"><span>Brought to you by the DBE team</span></div>
+        </div>
+    </div>`,
       };
 
       // Create a transporter for sending emails

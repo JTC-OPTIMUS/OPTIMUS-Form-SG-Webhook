@@ -98,7 +98,23 @@ app.post(
 
       // List of email recipients
       const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
+      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'xianghui556@gmail.com'];
+
+      // Get the current date and time
+      const currentdate = new Date();
+      const datetime =
+        'Webhook Time: ' +
+        currentdate.getDate() +
+        '/' +
+        (currentdate.getMonth() + 1) +
+        '/' +
+        currentdate.getFullYear() +
+        ' @ ' +
+        currentdate.getHours() +
+        ':' +
+        currentdate.getMinutes() +
+        ':' +
+        currentdate.getSeconds();
 
       // Email configuration
       const mailOptions = {
@@ -109,6 +125,8 @@ app.post(
         html: `<div style="border: 1px solid black; padding: 10px; border-radius:10px;">
         <h1>
             NEW JTC IDD Alert</h1>
+        <h3>${datetime}</h3>
+        <div style="border: 1px solid black; margin-bottom: 5px;"></div>
         <div style="display: flex; justify-content: center; align-items: center;">
             <table style="border-collapse: collapse; border: 1px solid black; border-radius: 5px;">
                 <tr>
@@ -170,8 +188,9 @@ app.post(
                     <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[16].answer}</td>
                 </tr>
             </table>
-          </div>
-        </div>`,
+        </div>
+        <div style="border-top: 2px solid black; text-align: end; margin-top: 5px"><span>Brought to you by the DBE team</span></div>
+      </div>`,
       };
 
       // Create a transporter for sending emails
