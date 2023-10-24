@@ -43,8 +43,14 @@ app.post(
     const formSGResponse = submission.responses;
     const firstNameText = JSON.stringify(formSGResponse[0].answer);
     const lastNameText = JSON.stringify(formSGResponse[1].answer);
+    const designationText = JSON.stringify(formSGResponse[2].answer);
     const emailText = JSON.stringify(formSGResponse[3].answer);
     const companyText = JSON.stringify(formSGResponse[4].answer);
+    const requestPurposeText = JSON.stringify(formSGResponse[7].answer);
+    const userGroupText = JSON.stringify(formSGResponse[8].answer);
+    const userRoleText = JSON.stringify(formSGResponse[9].answer);
+    const pdd_swc_groupText = JSON.stringify(formSGResponse[10].answer);
+    const additionalRemarksText = JSON.stringify(formSGResponse[11].answer);
 
     // Extract division information
     let projectText = 'Project not found';
@@ -76,6 +82,7 @@ app.post(
 
       const pad = (num) => (num < 10 ? '0' : '') + num; // Function to pad with leading zeros
 
+      // create a new datetime
       const datetime =
         'Webhook Time: ' +
         currentdate.getFullYear() +
@@ -104,13 +111,56 @@ app.post(
         <h1>
             NEW OPTIMUS Account Request</h1>
         <h4>${datetime}</h4>
-        <div>
-            <h4 style="margin: 0;">Response from FormSG is as follows:</h4>
-            <div style="border-bottom: 2px solid black; margin-bottom: 5px"></div><span>Request from <b>${firstNameText}</b> <b>${lastNameText}</b> from <b>${companyText}</b> for <b>${projectText}</b> was submitted. </span>
-            <div><span>Please refer to FormSG for more information.</span></div>
-            <div style="border-top: 2px solid black; text-align: end; margin-top: 5px"><span>Brought to you by the DBE team</span></div>
+        <div style="border: 1px solid black; margin-bottom: 5px;"></div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <table style="border-collapse: collapse; border: 1px solid black; border-radius: 5px;">
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">
+                        First Name</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${firstNameText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Last Name</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${lastNameText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Designation</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${designationText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Company Email</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${emailText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Company</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${companyText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Project</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${projectText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Purpose of Request</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${requestPurposeText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">User Group</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${userGroupText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">User Role For Project</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${userRoleText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">Additional Remarks
+                    </th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${additionalRemarksText}</td>
+                </tr>
+                
+            </table>
         </div>
-    </div>`,
+        <div style="border-top: 2px solid black; text-align: end; margin-top: 5px"><span>Brought to you by the DBE team</span></div>
+      </div>`,
       };
 
       // Create a transporter for sending emails

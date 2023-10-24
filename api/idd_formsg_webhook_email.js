@@ -96,6 +96,19 @@ app.post(
         formProjectType = 'Project Type not found';
       }
 
+      const formEmail = formSGResponse.responses[1].answer;
+      const formProjectTitle = formSGResponse.responses[6].answer;
+      const formProjectScope = formSGResponse.responses[7].answer;
+      const formProjectID = formSGResponse.responses[5].answer;
+      const formProjectSum = formSGResponse.responses[10].answer;
+      const formDesignDuration = formSGResponse.responses[12].answer;
+      const formProjectConstructionDuration = formSGResponse.responses[13].answer;
+      const formConstructionCommencementDate = formSGResponse.responses[14].answer;
+      const formCurrentProjectStage = formSGResponse.responses[11].answer;
+      const formEIRIssue = formSGResponse.responses[15].answer;
+      const formAdditionalRemarks = formSGResponse.responses[16].answer;
+
+
       // List of email recipients
       const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
       const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
@@ -144,15 +157,15 @@ app.post(
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Email</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[1].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formEmail}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Title</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[6].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formProjectTitle}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Scope</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[7].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formProjectScope}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Type</th>
@@ -160,36 +173,36 @@ app.post(
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">PROMPT Project ID</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[5].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formProjectID}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Project SUM</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[10].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formProjectSum}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Design Duration (Months)</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[12].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formDesignDuration}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Project Construction Duration (Months)
                     </th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[13].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formProjectConstructionDuration}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Construction Commencement Date</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[14].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formConstructionCommencementDate}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Current Project Stage</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[11].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formCurrentProjectStage}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">EIR Issued</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[15].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formEIRIssue}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Additional Remarks</th>
-                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formSGResponse.responses[16].answer}</td>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${formAdditionalRemarks}</td>
                 </tr>
             </table>
         </div>
