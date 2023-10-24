@@ -78,9 +78,9 @@ app.post(
       // Get the current date and time
       const currentdate = new Date();
       currentdate.setHours(currentdate.getHours() + 8); // Add 8 hours
-      
-      const pad = (num) => (num < 10 ? "0" : "") + num; // Function to pad with leading zeros
-      
+
+      const pad = (num) => (num < 10 ? '0' : '') + num; // Function to pad with leading zeros
+
       const datetime =
         'Webhook Time: ' +
         currentdate.getFullYear() +
@@ -97,7 +97,10 @@ app.post(
 
       // List of email recipients
       const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'xianghui556@gmail.com'];
+      const ccList = [
+        'siti_nurhazirah_mokmin@jtc.gov.sg',
+        'xianghui556@gmail.com',
+      ];
 
       // Email configuration
       const mailOptions = {
@@ -108,7 +111,7 @@ app.post(
         html: `<div style="border: 1px solid black; padding: 10px; border-radius:10px;">
         <h1>
             NEW OPTIMUS Account Request</h1>
-        <h3>${datetime}</h3>
+        <h4>${datetime}</h4>
         <div>
             <h4 style="margin: 0;">Response from FormSG is as follows:</h4>
             <div style="border-bottom: 2px solid black; margin-bottom: 5px"></div><span>Request from ${firstNameText} ${lastNameText} from ${companyText} for ${projectText} was submitted. </span>

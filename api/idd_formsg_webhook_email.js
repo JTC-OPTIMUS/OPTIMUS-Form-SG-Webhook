@@ -129,7 +129,7 @@ app.post(
         html: `<div style="border: 1px solid black; padding: 10px; border-radius:10px;">
         <h1>
             NEW JTC IDD Alert</h1>
-        <h3>${datetime}</h3>
+        <h4>${datetime}</h4>
         <div style="border: 1px solid black; margin-bottom: 5px;"></div>
         <div style="display: flex; justify-content: center; align-items: center;">
             <table style="border-collapse: collapse; border: 1px solid black; border-radius: 5px;">
