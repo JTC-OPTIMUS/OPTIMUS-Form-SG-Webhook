@@ -52,7 +52,9 @@ app.post(
     const companyText = JSON.stringify(formSGResponse[4].answer);
     const requestPurposeText = JSON.stringify(formSGResponse[7].answer);
     const userGroupText = JSON.stringify(formSGResponse[8].answer);
+    console.log(formSGResponse[8]);
     const userRoleText = JSON.stringify(formSGResponse[9].answer);
+    console.log(formSGResponse[9]); 
     const pdd_swc_groupText = JSON.stringify(formSGResponse[10].answer);
     const additionalRemarksText = JSON.stringify(formSGResponse[11].answer);
 
