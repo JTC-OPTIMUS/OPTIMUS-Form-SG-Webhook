@@ -21,6 +21,10 @@ function capitalizeFirstLetter(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
+// List of email recipients
+const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
+const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
+
 // Define a POST route for the webhook
 app.post(
   '/api/idd_formsg_webhook_email',
@@ -102,16 +106,13 @@ app.post(
       const formProjectID = formSGResponse.responses[5].answer;
       const formProjectSum = formSGResponse.responses[10].answer;
       const formDesignDuration = formSGResponse.responses[12].answer;
-      const formProjectConstructionDuration = formSGResponse.responses[13].answer;
-      const formConstructionCommencementDate = formSGResponse.responses[14].answer;
+      const formProjectConstructionDuration =
+        formSGResponse.responses[13].answer;
+      const formConstructionCommencementDate =
+        formSGResponse.responses[14].answer;
       const formCurrentProjectStage = formSGResponse.responses[11].answer;
       const formEIRIssue = formSGResponse.responses[15].answer;
       const formAdditionalRemarks = formSGResponse.responses[16].answer;
-
-
-      // List of email recipients
-      const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-      const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
 
       // Get the current date and time
       const currentdate = new Date();
