@@ -23,7 +23,7 @@ function capitalizeFirstLetter(word) {
 
 // List of email recipients
 const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg'];
+const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'nikki_yong@jtc.gov.sg', 'bryan_ong@jtc.gov.sg', 'yve_xu@jtc.gov.sg'];
 
 // Define a POST route for the webhook
 app.post(
