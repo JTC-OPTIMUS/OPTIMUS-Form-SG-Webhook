@@ -18,7 +18,12 @@ const HAS_ATTACHMENTS = false;
 
 // List of email recipients
 const mailList = ['al-basra_al-bihaqi@jtc.gov.sg'];
-const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'nikki_yong@jtc.gov.sg', 'bryan_ong@jtc.gov.sg', 'yve_xu@jtc.gov.sg'];
+const ccList = [
+  'siti_nurhazirah_mokmin@jtc.gov.sg',
+  'nikki_yong@jtc.gov.sg',
+  'bryan_ong@jtc.gov.sg',
+  'yve_xu@jtc.gov.sg',
+];
 
 // Define a POST route for the webhook
 app.post(
@@ -51,6 +56,7 @@ app.post(
     const lastNameText = formSGResponse[1].answer;
     const designationText = formSGResponse[2].answer;
     const emailText = formSGResponse[3].answer;
+    const optimusEmailText = emailText.split('@')[0] + '@optimus-pw.com';
     const companyText = formSGResponse[4].answer;
     const requestPurposeText = formSGResponse[7].answer;
     const userGroupText = formSGResponse[8].answerArray;
@@ -128,6 +134,10 @@ app.post(
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Designation</th>
                     <td style="border: 1px solid black; padding: 5px; text-align: left;">${designationText}</td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black; padding: 5px; text-align: left;">OPTIMUS Email</th>
+                    <td style="border: 1px solid black; padding: 5px; text-align: left;">${optimusEmailText}</td>
                 </tr>
                 <tr>
                     <th style="border: 1px solid black; padding: 5px; text-align: left;">Company Email</th>
