@@ -24,6 +24,23 @@ const ccList = [
   'bryan_ong@jtc.gov.sg',
   'yve_xu@jtc.gov.sg',
 ];
+const { google } = require('googleapis');
+const sheets = google.sheets('v4');
+require('dotenv').config(); // Load environment variables from a .env file
+
+// Load your credentials JSON file
+const credentials = JSON.parse(process.env.GOOGLE_API_KEY);
+
+// Initialize the Google Sheets API
+const auth = new google.auth.GoogleAuth({
+  credentials,
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+// The ID of your Google Sheets document
+const SPREADSHEET_ID = process.env.ENV_SPREADSHEET_ID;
+
+const RowTotal = 'Acct Request FormSG!B1';
 
 // Define a POST route for the webhook
 app.post(
@@ -59,10 +76,22 @@ app.post(
     const optimusEmailText = emailText.split('@')[0] + '@optimus-pw.com';
     const companyText = formSGResponse[4].answer;
     const requestPurposeText = formSGResponse[7].answer;
-    const userGroupText = formSGResponse[8].answerArray;
-    const userRoleText = formSGResponse[9].answerArray.join(', ');
-    const pdd_swc_groupText = formSGResponse[10].answer;
     const additionalRemarksText = formSGResponse[11].answer;
+
+    let pdd_swc_groupText = '';
+    if (formSGResponse[10].answerArray) {
+      pdd_swc_groupText = formSGResponse[10].answerArray.join(', ');
+    }
+
+    let userGroupText = '';
+    if (formSGResponse[8].answerArray) {
+      userGroupText = formSGResponse[8].answerArray.join(', ');
+    }
+
+    let userRoleText = '';
+    if (formSGResponse[9].answerArray) {
+      userRoleText = formSGResponse[9].answerArray.join(', ');
+    }
 
     // Extract division information
     let projectText = 'Project not found';
@@ -103,6 +132,19 @@ app.post(
         '-' +
         pad(currentdate.getDate()) +
         ' @ ' +
+        pad(currentdate.getHours()) +
+        ':' +
+        pad(currentdate.getMinutes()) +
+        ':' +
+        pad(currentdate.getSeconds());
+
+      const excelTime =
+        currentdate.getFullYear() +
+        '-' +
+        pad(currentdate.getMonth() + 1) +
+        '-' +
+        pad(currentdate.getDate()) +
+        ' ' +
         pad(currentdate.getHours()) +
         ':' +
         pad(currentdate.getMinutes()) +
@@ -205,6 +247,71 @@ app.post(
           }
         });
       });
+
+      // Update google sheets
+      const sheetsApi = await sheets.spreadsheets.values.get({
+        auth: await auth.getClient(),
+        spreadsheetId: SPREADSHEET_ID,
+        range: RowTotal,
+      });
+
+      // Define the row number where you want to write the values
+      const rowIndex = parseInt(sheetsApi.data.values[0][0]) + 7;
+
+      // Define the values to write
+      const valuesToWriteAcct = [
+        [
+          '',
+          excelTime,
+          'Success',
+          firstNameText,
+          lastNameText,
+          designationText,
+          emailText,
+          companyText,
+          projectText,
+          requestPurposeText,
+          userGroupText,
+          '',
+          '',
+          pdd_swc_groupText,
+          additionalRemarksText,
+          '',
+          '', // Project Role
+          '', // SYNCHRO Project Role
+        ],
+      ];
+
+      // Define the values to write
+      const valuesToWriteSMTRequest = [
+        [
+          '',
+          '',
+          firstNameText,
+          lastNameText,
+          designationText,
+          optimusEmailText,
+          '',
+          emailText,
+          companyText,
+          projectText,
+          '', // Number of Roles  
+        ],
+      ];
+
+      // Create the request to update the values
+      const appendRequest = await sheets.spreadsheets.values.append({
+        auth: await auth.getClient(),
+        spreadsheetId: SPREADSHEET_ID,
+        range:  `Acct Request FormSG!A${rowIndex}`,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        resource: {
+          values: valuesToWriteAcct,
+        },
+      });
+
+      // console.log('Values updated successfully:', appendRequest.data);
 
       return res.status(200).send({ message: 'See console for submission!' });
     } else {

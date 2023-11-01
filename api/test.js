@@ -53,15 +53,18 @@ async function getData() {
   ];
 
   // Create the request to update the values
-  const updateRequest = await sheets.spreadsheets.values.update({
+  const appendRequest = await sheets.spreadsheets.values.append({
     auth: await auth.getClient(),
     spreadsheetId: SPREADSHEET_ID,
     range: `Acct Request FormSG!A${rowIndex}`,
     valueInputOption: 'RAW',
-    resource: { values: valuesToWrite },
+    insertDataOption: 'INSERT_ROWS',
+    resource: {
+      values: valuesToWrite,
+    },
   });
 
-  console.log('Values updated successfully:', updateRequest.data);
+  console.log('Values updated successfully:', appendRequest.data);
 }
 
 getData();
