@@ -30,8 +30,9 @@ const sheets = google.sheets('v4');
 require('dotenv').config(); // Load environment variables from a .env file
 
 // Load your credentials JSON file
-let credentials = {}
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6Imp0Yy1vcHRpbXVzLXdlYmhvb2siLCJwcml2YXRlX2tleV9pZCI6IjJhMWRhNDBhNDdhMjVmMzYyYWViNGVjMzYyMzNkZjQ3MGM1NDI0MjYiLCJwcml2YXRlX2tleSI6Ii0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZnSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS2d3Z2dTa0FnRUFBb0lCQVFDWnpEMjFROEpKOGRsRFxuaFZQMGlqNlpGdEQ5NVZncDNKczdOMGttZWtDUkxkVUR4Z21LQ0hvS21NcGJzbjM4bElmc09kUHhwbkR5TDJZNlxuWVM4enpqUGVaNU1yY0puYVR5RXpSWlVsRHc4aUtxT05YN0dOUmpvUDljRlJ5b2JSWlc3VGgvd0JVWjhqcGdHVVxuVlBsV2prSGx5aUhVOHZxM2Nrcms4RWRWNmQ4WGorZGpwVTlGei9vZDQzRWNjV3paZlViK0FxUHRhMVI0RnlVZVxuUzVDdHliczhxdU1lWVErUDZXcHk5MGNOTzdMSkJMSFMvT3JQS2dyYlhHdWZBNUdKT2dxTE5pS2w3cWVMSlBDM1xuamlTV25EczAwUVpmUTVZQTBJSlQvUm5XNGpkWXZsdGtHamxZcUo4dVZJa3htbnhpK25VUUxteXVGSGJiVGMxVlxuQmdVaE5EajNBZ01CQUFFQ2dnRUFGb3M4TG1KWXkrc0NER1l5U01HczdGYk9XckV3QzY3VktFaHgxZ3lNZzF0alxuQXBNWVdkM2xPY0ZzeENVMVYzMVVNVG5HeWdDNlJKM1REOUtvRHlGMk0rOGR3UHZYNllxNDFLR3ArNDBxRERtUVxuME12S3BHazdZSlNHK2x6RUIxU2xlcWRQdHNmR21ueWVkYVpCQ0VHQkFsUnZRaDQ5eHY4ZllGQ2lQRU0wV3VrWVxuUmpqTGpoZXNCc3poV0V1cmZxc1VuWSt1Q1MvS0JXTkRsTG9yN25uZEtVczBtaE50SlgrWFNoZExVODdDL0JGQVxuRDhjSGxDYW1qZGZydURHcVZST0NiQ1E1UE8zWXh3aWgvZ1pnSGU4YVVRV0NWOTdYSlhJTWJ4U2E1ZlcxVll4SFxuZTRuUnNPTDQ2c1JyTzQ5c3ZHOTlsWlFiZEQ3VDZaTEl2OExLWXYxalJRS0JnUURYT3pta3g0aEV6b1gzSjY2dFxua3dxVW1NcVplVlc3UDFZRkxQYWJDSUJUV0VpaSs5blNDQSttVU9OU1VBVlJCTHRJQm5GcU81SzdDTS9yN29PRFxuNXZyZ3BMblMzbm1xODUwaEFPTXRabDlLb2hQMGZ4cFZidXozY1JkYUNObFVHdlNHUzMxSys0Zy8wQnFJbnNJc1xuTEVlbmdScUZUUGRHZVIrL3ZiRUlwQ2dlUlFLQmdRQzI3Z3QvUHQwWTVZdkMzSzd0R2hBUUQ3KzRQdnB6akpWWFxuaUM3WkNNKzg1YVBMckVMTS90dHBJdlNEUjZaUHlKSXBHOVhoNUhvU295c1IycVhvTERYN3R0am56akppNHNaNVxubEx2OWdsejl5YUJFS2krbHYwQy8wZ08zVjVlUjQ3MWNLMmZUM3B1V2NjT3VydFhNNjJ4aUtjRXNIQzRLUUlFT1xuRWRKQjdXUDhDd0tCZ1FDejh6YU15SzdzS0dmbGJ1NGkvWStaRWU1Q1J5b2d0aUdyamg1WkhOQjkzcEJNaEpsblxuZTRucUdqTVZmUVlVNlFuVWZGNlMzV0FldEkxeXl5WjJQOFo5ei92MWpFRFpaM2wyUUpHd1FhbG1jd0NRS1R6UlxuTlQ4MjJ2MFZMOVRVOXZ4KzA5cmJ1RllBVkhQNnloRzZjUU12ejBkbk1DU0diWHJZQ3pkYTdEVUdxUUtCZ1FDZFxuMitDS0IwcXZFRy9DVWNTV2tYWXBGaDRoTmgvVkZRMVBReE1DY2NzclBKUlR6Nnk1MEhpeFN0dnNhaWxJRWxLblxuTFFFdWRZY3VqQ1kvdXdxT3g1QXlUd0R4VVF4RUwyU05TTi9OamZFSGhUWkxmSWd2cFZLUDlnRUU5NDZ4OC9EV1xuR0JMNlQ5QytUQ0JNbjAyYkQ5SXhCODFPYm1jQXE5ZHl0OGhVNGpIMUx3S0JnRVZaS0NkNGdoaHBtczJydFM1c1xuUmR6RjMvOEY4azBIVUNNVTVrQkhTTHV3bmFGck4rc3BLRTBXbFhaVWIrWXluSm9FV1BoQVgrMDUwVzRzUXpIWVxucXlXSGVkeDFJemVVTHRuQVNQRjFpdFdhaW14ZTFEZkpkZEZ4UWp6NHMyamwwL2l3ZHdDcm9ud3lEUW9XVFZ1OFxuTTZqbHlneWtpTmJDREI5VWJoai8rV082XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLCJjbGllbnRfZW1haWwiOiJvcHRpbXVzLXJlcXVlc3Qtd2ViaG9va0BqdGMtb3B0aW11cy13ZWJob29rLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiY2xpZW50X2lkIjoiMTA3NDA1ODkwMDUzMTk0MjQyODY0IiwiYXV0aF91cmkiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20vby9vYXV0aDIvYXV0aCIsInRva2VuX3VyaSI6Imh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjoiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwiY2xpZW50X3g1MDlfY2VydF91cmwiOiJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9yb2JvdC92MS9tZXRhZGF0YS94NTA5L29wdGltdXMtcmVxdWVzdC13ZWJob29rJTQwanRjLW9wdGltdXMtd2ViaG9vay5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVuaXZlcnNlX2RvbWFpbiI6Imdvb2dsZWFwaXMuY29tIn0.oFq8BjSOI6ejXb32vUI13h3vdGq2pgeyoTwkWCUmfP4';
+let credentials = {};
+const token = // JWT token
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6Imp0Yy1vcHRpbXVzLXdlYmhvb2siLCJwcml2YXRlX2tleV9pZCI6IjJhMWRhNDBhNDdhMjVmMzYyYWViNGVjMzYyMzNkZjQ3MGM1NDI0MjYiLCJwcml2YXRlX2tleSI6Ii0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZnSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS2d3Z2dTa0FnRUFBb0lCQVFDWnpEMjFROEpKOGRsRFxuaFZQMGlqNlpGdEQ5NVZncDNKczdOMGttZWtDUkxkVUR4Z21LQ0hvS21NcGJzbjM4bElmc09kUHhwbkR5TDJZNlxuWVM4enpqUGVaNU1yY0puYVR5RXpSWlVsRHc4aUtxT05YN0dOUmpvUDljRlJ5b2JSWlc3VGgvd0JVWjhqcGdHVVxuVlBsV2prSGx5aUhVOHZxM2Nrcms4RWRWNmQ4WGorZGpwVTlGei9vZDQzRWNjV3paZlViK0FxUHRhMVI0RnlVZVxuUzVDdHliczhxdU1lWVErUDZXcHk5MGNOTzdMSkJMSFMvT3JQS2dyYlhHdWZBNUdKT2dxTE5pS2w3cWVMSlBDM1xuamlTV25EczAwUVpmUTVZQTBJSlQvUm5XNGpkWXZsdGtHamxZcUo4dVZJa3htbnhpK25VUUxteXVGSGJiVGMxVlxuQmdVaE5EajNBZ01CQUFFQ2dnRUFGb3M4TG1KWXkrc0NER1l5U01HczdGYk9XckV3QzY3VktFaHgxZ3lNZzF0alxuQXBNWVdkM2xPY0ZzeENVMVYzMVVNVG5HeWdDNlJKM1REOUtvRHlGMk0rOGR3UHZYNllxNDFLR3ArNDBxRERtUVxuME12S3BHazdZSlNHK2x6RUIxU2xlcWRQdHNmR21ueWVkYVpCQ0VHQkFsUnZRaDQ5eHY4ZllGQ2lQRU0wV3VrWVxuUmpqTGpoZXNCc3poV0V1cmZxc1VuWSt1Q1MvS0JXTkRsTG9yN25uZEtVczBtaE50SlgrWFNoZExVODdDL0JGQVxuRDhjSGxDYW1qZGZydURHcVZST0NiQ1E1UE8zWXh3aWgvZ1pnSGU4YVVRV0NWOTdYSlhJTWJ4U2E1ZlcxVll4SFxuZTRuUnNPTDQ2c1JyTzQ5c3ZHOTlsWlFiZEQ3VDZaTEl2OExLWXYxalJRS0JnUURYT3pta3g0aEV6b1gzSjY2dFxua3dxVW1NcVplVlc3UDFZRkxQYWJDSUJUV0VpaSs5blNDQSttVU9OU1VBVlJCTHRJQm5GcU81SzdDTS9yN29PRFxuNXZyZ3BMblMzbm1xODUwaEFPTXRabDlLb2hQMGZ4cFZidXozY1JkYUNObFVHdlNHUzMxSys0Zy8wQnFJbnNJc1xuTEVlbmdScUZUUGRHZVIrL3ZiRUlwQ2dlUlFLQmdRQzI3Z3QvUHQwWTVZdkMzSzd0R2hBUUQ3KzRQdnB6akpWWFxuaUM3WkNNKzg1YVBMckVMTS90dHBJdlNEUjZaUHlKSXBHOVhoNUhvU295c1IycVhvTERYN3R0am56akppNHNaNVxubEx2OWdsejl5YUJFS2krbHYwQy8wZ08zVjVlUjQ3MWNLMmZUM3B1V2NjT3VydFhNNjJ4aUtjRXNIQzRLUUlFT1xuRWRKQjdXUDhDd0tCZ1FDejh6YU15SzdzS0dmbGJ1NGkvWStaRWU1Q1J5b2d0aUdyamg1WkhOQjkzcEJNaEpsblxuZTRucUdqTVZmUVlVNlFuVWZGNlMzV0FldEkxeXl5WjJQOFo5ei92MWpFRFpaM2wyUUpHd1FhbG1jd0NRS1R6UlxuTlQ4MjJ2MFZMOVRVOXZ4KzA5cmJ1RllBVkhQNnloRzZjUU12ejBkbk1DU0diWHJZQ3pkYTdEVUdxUUtCZ1FDZFxuMitDS0IwcXZFRy9DVWNTV2tYWXBGaDRoTmgvVkZRMVBReE1DY2NzclBKUlR6Nnk1MEhpeFN0dnNhaWxJRWxLblxuTFFFdWRZY3VqQ1kvdXdxT3g1QXlUd0R4VVF4RUwyU05TTi9OamZFSGhUWkxmSWd2cFZLUDlnRUU5NDZ4OC9EV1xuR0JMNlQ5QytUQ0JNbjAyYkQ5SXhCODFPYm1jQXE5ZHl0OGhVNGpIMUx3S0JnRVZaS0NkNGdoaHBtczJydFM1c1xuUmR6RjMvOEY4azBIVUNNVTVrQkhTTHV3bmFGck4rc3BLRTBXbFhaVWIrWXluSm9FV1BoQVgrMDUwVzRzUXpIWVxucXlXSGVkeDFJemVVTHRuQVNQRjFpdFdhaW14ZTFEZkpkZEZ4UWp6NHMyamwwL2l3ZHdDcm9ud3lEUW9XVFZ1OFxuTTZqbHlneWtpTmJDREI5VWJoai8rV082XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLCJjbGllbnRfZW1haWwiOiJvcHRpbXVzLXJlcXVlc3Qtd2ViaG9va0BqdGMtb3B0aW11cy13ZWJob29rLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiY2xpZW50X2lkIjoiMTA3NDA1ODkwMDUzMTk0MjQyODY0IiwiYXV0aF91cmkiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20vby9vYXV0aDIvYXV0aCIsInRva2VuX3VyaSI6Imh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjoiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwiY2xpZW50X3g1MDlfY2VydF91cmwiOiJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9yb2JvdC92MS9tZXRhZGF0YS94NTA5L29wdGltdXMtcmVxdWVzdC13ZWJob29rJTQwanRjLW9wdGltdXMtd2ViaG9vay5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVuaXZlcnNlX2RvbWFpbiI6Imdvb2dsZWFwaXMuY29tIn0.oFq8BjSOI6ejXb32vUI13h3vdGq2pgeyoTwkWCUmfP4';
 const secretKey = process.env.JWT_SECRET_KEY;
 
 jwt.verify(token, secretKey, (err, decoded) => {
@@ -52,6 +53,7 @@ const auth = new google.auth.GoogleAuth({
 
 // The ID of your Google Sheets document
 const SPREADSHEET_ID = process.env.ENV_SPREADSHEET_ID;
+const SMT_SPREADSHEET_ID = process.env.ENV_SMT_SPREADSHEET_ID;
 
 const RowTotal = 'Acct Request FormSG!B1';
 
@@ -136,7 +138,7 @@ app.post(
 
       const pad = (num) => (num < 10 ? '0' : '') + num; // Function to pad with leading zeros
 
-      // create a new datetime
+      // time formats
       const datetime =
         'Webhook Time: ' +
         currentdate.getFullYear() +
@@ -163,6 +165,13 @@ app.post(
         pad(currentdate.getMinutes()) +
         ':' +
         pad(currentdate.getSeconds());
+
+      const excelDate =
+        currentdate.getFullYear() +
+        '-' +
+        pad(currentdate.getMonth() + 1) +
+        '-' +
+        pad(currentdate.getDate());
 
       // Email configuration
       const mailOptions = {
@@ -269,9 +278,31 @@ app.post(
       });
 
       // Define the row number where you want to write the values
-      const rowIndex = parseInt(sheetsApi.data.values[0][0]) + 7;
+      const rowIndex = parseInt(sheetsApi.data.values[0][0]) + 7; // +7 to skip the headers
 
-      // Define the values to write
+      const sheetsApi_Get_Empty_Row = await sheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId: SPREADSHEET_ID,
+        range: 'B:B', // B:B Looks for rows in date column
+      });
+
+      // Define the row number where you want to write the values
+      const SMT_Request = parseInt(
+        sheetsApi_Get_Empty_Row.data.values.length + 1
+      ); // make sure to add 1 to the length to get the next empty row
+
+      const SMT_sheetsApi_Get_Empty_Row = await sheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId: SPREADSHEET_ID,
+        range: 'C:C', // C:C Looks for rows in First Name column
+      });
+
+      // Define the row number where you want to write the values
+      const SMT_RowIndex = parseInt(
+        SMT_sheetsApi_Get_Empty_Row.data.values.length + 1
+      ); // make sure to add 1 to the length to get the next empty row
+
+      // Define the values to write for Acct Request FormSG tab
       const valuesToWriteAcct = [
         [
           '',
@@ -295,7 +326,23 @@ app.post(
         ],
       ];
 
-      // Define the values to write
+      // Define the values to write for Account SMT-Request
+      const valuesToWriteAccountSMTRequest = [
+        [
+          '',
+          excelDate,
+          firstNameText,
+          lastNameText,
+          designationText,
+          optimusEmailText,
+          emailText,
+          companyText,
+          projectText,
+          '',
+        ],
+      ];
+
+      // Define the values to write for SMT-Request
       const valuesToWriteSMTRequest = [
         [
           '',
@@ -312,8 +359,8 @@ app.post(
         ],
       ];
 
-      // Create the request to update the values
-      const appendRequest = await sheets.spreadsheets.values.append({
+      // Create the request to update the values for Acct Request FormSG tab
+      await sheets.spreadsheets.values.append({
         auth: await auth.getClient(),
         spreadsheetId: SPREADSHEET_ID,
         range: `Acct Request FormSG!A${rowIndex}`,
@@ -321,6 +368,30 @@ app.post(
         insertDataOption: 'INSERT_ROWS',
         resource: {
           values: valuesToWriteAcct,
+        },
+      });
+
+      // Create the request to update the values for Accounts SMT-Request
+      await sheets.spreadsheets.values.append({
+        auth: await auth.getClient(),
+        spreadsheetId: SPREADSHEET_ID,
+        range: `Accounts SMT-Request!A${SMT_Request}`,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        resource: {
+          values: valuesToWriteAccountSMTRequest,
+        },
+      });
+
+      // Create the request to update the values for SMT-Request
+      await sheets.spreadsheets.values.append({
+        auth: await auth.getClient(),
+        spreadsheetId: SMT_SPREADSHEET_ID,
+        range: `SMT_Account!A${SMT_Request}`,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        resource: {
+          values: valuesToWriteSMTRequest,
         },
       });
 

@@ -27,9 +27,9 @@ async function getData() {
     range: range,
   });
 
-  const values = response.data.values[0]; // Assuming you only need data from row 1.
+  const values = response.data.values; // Assuming you only need data from row 1.
 
-  console.log(values);
+  console.log(values.length + 1);
 }
 
 getData();
