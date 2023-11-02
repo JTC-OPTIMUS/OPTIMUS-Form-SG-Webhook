@@ -29,6 +29,7 @@ const sheets = google.sheets('v4');
 require('dotenv').config(); // Load environment variables from a .env file
 
 // Load your credentials JSON file
+console.log(process.env.GOOGLE_API_KEY);
 const credentials = JSON.parse(process.env.GOOGLE_API_KEY);
 
 // Initialize the Google Sheets API
