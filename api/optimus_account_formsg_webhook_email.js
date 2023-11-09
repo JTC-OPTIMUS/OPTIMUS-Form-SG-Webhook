@@ -80,7 +80,7 @@ app.post(
       ? await formsg.crypto.decryptWithAttachments(formSecretKey, req.body.data)
       : formsg.crypto.decrypt(formSecretKey, req.body.data);
 
-    console.log(submission);
+    // console.log(submission);
 
     const formSGResponse = submission.responses;
     const firstNameText = formSGResponse[0].answer;
