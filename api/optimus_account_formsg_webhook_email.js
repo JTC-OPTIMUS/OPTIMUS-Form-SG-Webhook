@@ -56,8 +56,6 @@ const auth = new google.auth.GoogleAuth({
 const SPREADSHEET_ID = process.env.ENV_SPREADSHEET_ID;
 const SMT_SPREADSHEET_ID = process.env.ENV_SMT_SPREADSHEET_ID;
 
-const RowTotal = 'Acct Request FormSG!B1';
-
 // Define a POST route for the webhook
 app.post(
   '/api/optimus_account_formsg_webhook_email',
@@ -105,8 +103,10 @@ app.post(
     }
 
     let userRoleText = '';
+    let userRoleNumbers = 0;
     if (formSGResponse[9].answerArray) {
       userRoleText = formSGResponse[9].answerArray.join(', ');
+      userRoleNumbers = formSGResponse[9].answerArray.length;
     }
 
     // Extract division information
@@ -271,38 +271,6 @@ app.post(
         });
       });
 
-      // Update google sheets
-      const sheetsApi = await sheets.spreadsheets.values.get({
-        auth: await auth.getClient(),
-        spreadsheetId: SPREADSHEET_ID,
-        range: RowTotal,
-      });
-
-      // Define the row number where you want to write the values
-      const rowIndex = parseInt(sheetsApi.data.values[0][0]) + 7; // +7 to skip the headers
-
-      const sheetsApi_Get_Empty_Row = await sheets.spreadsheets.values.get({
-        auth,
-        spreadsheetId: SPREADSHEET_ID,
-        range: 'B:B', // B:B Looks for rows in date column
-      });
-
-      // Define the row number where you want to write the values
-      const SMT_Request = parseInt(
-        sheetsApi_Get_Empty_Row.data.values.length + 1
-      ); // make sure to add 1 to the length to get the next empty row
-
-      const SMT_sheetsApi_Get_Empty_Row = await sheets.spreadsheets.values.get({
-        auth,
-        spreadsheetId: SPREADSHEET_ID,
-        range: 'C:C', // C:C Looks for rows in First Name column
-      });
-
-      // Define the row number where you want to write the values
-      const SMT_RowIndex = parseInt(
-        SMT_sheetsApi_Get_Empty_Row.data.values.length + 1
-      ); // make sure to add 1 to the length to get the next empty row
-
       // Define the values to write for Acct Request FormSG tab
       const valuesToWriteAcct = [
         [
@@ -342,29 +310,41 @@ app.post(
           '',
         ],
       ];
-
-      // Define the values to write for SMT-Request
-      const valuesToWriteSMTRequest = [
-        [
-          '',
-          '',
-          firstNameText,
-          lastNameText,
-          designationText,
-          optimusEmailText,
-          '',
-          emailText,
-          companyText,
-          projectText,
-          '', // Number of Roles
-        ],
-      ];
+      let userRoleTextRemark = '';
+      let SMT_Pass_Gate = false;
+      switch (requestPurposeText) {
+        case 'Create Account':
+          userRoleTextRemark = 'Account creation and assign user role';
+          SMT_Pass_Gate = true;
+          break;
+        case 'Access to Project (only for Existing Accounts)':
+          userRoleTextRemark =
+            'Existing user with additional user role (Do not remove any current user role)';
+          SMT_Pass_Gate = true;
+          break;
+        case 'Unlock Account/Reset Password':
+          userRoleTextRemark = 'To unlock user account and assign user role';
+          SMT_Pass_Gate = true;
+          break;
+        case 'Disable Account':
+          userRoleTextRemark = 'To remove user role and disable account';
+          SMT_Pass_Gate = true;
+          break;
+        case 'Unpair PingID from old device':
+          SMT_Pass_Gate = false;
+          break;
+        case 'Change OTP mobile number':
+          SMT_Pass_Gate = false;
+          break;
+        default:
+          break;
+      }
 
       // Create the request to update the values for Acct Request FormSG tab
       await sheets.spreadsheets.values.append({
         auth: await auth.getClient(),
         spreadsheetId: SPREADSHEET_ID,
-        range: `Acct Request FormSG!A${rowIndex}`,
+        range: `Acct Request FormSG!A7`,
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         resource: {
@@ -376,7 +356,7 @@ app.post(
       await sheets.spreadsheets.values.append({
         auth: await auth.getClient(),
         spreadsheetId: SPREADSHEET_ID,
-        range: `Accounts SMT-Request!A${SMT_Request}`,
+        range: `Accounts SMT-Request!A3`,
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         resource: {
@@ -384,17 +364,35 @@ app.post(
         },
       });
 
-      // Create the request to update the values for SMT-Request
-      await sheets.spreadsheets.values.append({
-        auth: await auth.getClient(),
-        spreadsheetId: SMT_SPREADSHEET_ID,
-        range: `SMT_Account!A${SMT_Request}`,
-        valueInputOption: 'RAW',
-        insertDataOption: 'INSERT_ROWS',
-        resource: {
-          values: valuesToWriteSMTRequest,
-        },
-      });
+      if (SMT_Pass_Gate) {
+        // Define the values to write for SMT-Request
+        const valuesToWriteSMTRequest = [
+          [
+            firstNameText,
+            lastNameText,
+            designationText,
+            optimusEmailText,
+            emailText,
+            companyText,
+            projectText,
+            userRoleText,
+            userRoleTextRemark,
+            userRoleNumbers,
+          ],
+        ];
+
+        // Create the request to update the values for SMT-Request
+        await sheets.spreadsheets.values.append({
+          auth: await auth.getClient(),
+          spreadsheetId: SMT_SPREADSHEET_ID,
+          range: `SMT_Account!A3`,
+          valueInputOption: 'RAW',
+          insertDataOption: 'INSERT_ROWS',
+          resource: {
+            values: valuesToWriteSMTRequest,
+          },
+        });
+      }
 
       // console.log('Values updated successfully:', appendRequest.data);
 
