@@ -255,41 +255,43 @@ app.post(
         });
       });
       const google_auth = await auth.getClient();
-      // let emailArray = [];
+      let emailArray = [];
+      let get_emailArray_response;
 
-      // if (
-      //   requestPurposeText === 'Create Account' ||
-      //   requestPurposeText === 'Access to Project (only for Existing Accounts)'
-      // ) {
-      //   const response = await sheets.spreadsheets.values.get({
-      //     auth: google_auth,
-      //     spreadsheetId: SPREADSHEET_ID,
-      //     range: 'Accounts SMT-Request!AA2:AA',
-      //   });
-      //   emailArray = await response.data.values;
-      // }
+      if (
+        requestPurposeText === 'Create Account' ||
+        requestPurposeText === 'Access to Project (only for Existing Accounts)'
+      ) {
+        get_emailArray_response = await sheets.spreadsheets.values.get({
+          auth: google_auth,
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Accounts SMT-Request!AA2:AA',
+        });
+        emailArray = await get_emailArray_response.data.values;
+        console.log(emailArray);
+      }
 
       let userRoleTextRemark = '';
       let SMT_Pass_Gate = false;
       switch (requestPurposeText) {
         case 'Create Account':
-          // if (emailArray.includes(optimusEmailText)) {
-          //   userRoleTextRemark =
-          //     '(Auto Detection) Existing user with additional user role (Do not remove any current user role)';
-          // } else {
-          //   userRoleTextRemark = 'Account creation and assign user role';
-          // }
+          if (emailArray.includes(optimusEmailText)) {
+            userRoleTextRemark =
+              '(Auto Detection) Existing user with additional user role (Do not remove any current user role)';
+          } else {
+            userRoleTextRemark = 'Account creation and assign user role';
+          }
           userRoleTextRemark = 'Account creation and assign user role';
           SMT_Pass_Gate = true;
           break;
         case 'Access to Project (only for Existing Accounts)':
-          // if (emailArray.includes(optimusEmailText)) {
-          //   userRoleTextRemark =
-          //     'Existing user with additional user role (Do not remove any current user role)';
-          // } else {
-          //   userRoleTextRemark =
-          //     '(Auto Detection) Account creation and assign user role';
-          // }
+          if (emailArray.includes(optimusEmailText)) {
+            userRoleTextRemark =
+              'Existing user with additional user role (Do not remove any current user role)';
+          } else {
+            userRoleTextRemark =
+              '(Auto Detection) Account creation and assign user role';
+          }
           userRoleTextRemark =
             'Existing user with additional user role (Do not remove any current user role)';
           SMT_Pass_Gate = true;
@@ -421,7 +423,7 @@ app.post(
         emailSendingPromise,
       ])
         .then(() => {
-          console.log('Submission successful!')
+          console.log('Submission successful!');
         })
         .catch((err) => {
           console.log(err);
