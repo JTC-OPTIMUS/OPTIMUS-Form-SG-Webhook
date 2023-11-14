@@ -275,6 +275,7 @@ app.post(
       const valuesToWriteAcct = [
         [
           '',
+          '',
           excelTime,
           'Success',
           firstNameText,
@@ -298,6 +299,7 @@ app.post(
       // Define the values to write for Account SMT-Request
       const valuesToWriteAccountSMTRequest = [
         [
+          '',
           '',
           excelDate,
           firstNameText,
@@ -339,12 +341,13 @@ app.post(
         default:
           break;
       }
+      const google_auth = await auth.getClient();
 
       // Create the request to update the values for Acct Request FormSG tab
       sheets.spreadsheets.values.append({
-        auth: await auth.getClient(),
+        auth: google_auth,
         spreadsheetId: SPREADSHEET_ID,
-        range: `Acct Request FormSG!7:7`,
+        range: `Acct Request FormSG!A6`,
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         resource: {
@@ -354,9 +357,9 @@ app.post(
 
       // Create the request to update the values for Accounts SMT-Request
       sheets.spreadsheets.values.append({
-        auth: await auth.getClient(),
+        auth: google_auth,
         spreadsheetId: SPREADSHEET_ID,
-        range: `Accounts SMT-Request!3:3`,
+        range: `Accounts SMT-Request!A3`,
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         resource: {
@@ -368,6 +371,7 @@ app.post(
         // Define the values to write for SMT-Request
         const valuesToWriteSMTRequest = [
           [
+            '',
             firstNameText,
             lastNameText,
             designationText,
@@ -383,9 +387,9 @@ app.post(
 
         // Create the request to update the values for SMT-Request
         sheets.spreadsheets.values.append({
-          auth: await auth.getClient(),
+          auth: google_auth,
           spreadsheetId: SMT_SPREADSHEET_ID,
-          range: `SMT_Account!A3`,
+          range: `SMT_Account!A2`,
           valueInputOption: 'RAW',
           insertDataOption: 'INSERT_ROWS',
           resource: {
