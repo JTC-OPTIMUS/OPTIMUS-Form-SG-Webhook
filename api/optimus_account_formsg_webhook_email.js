@@ -127,7 +127,7 @@ app.post(
 
       // Check if Nodemailer is installed
       try {
-        require.resolve('nodemailer')
+        require.resolve('nodemailer');
       } catch (e) {
         console.error('nodemailer is not found');
         process.exit(e.code);
@@ -140,39 +140,23 @@ app.post(
       const pad = (num) => (num < 10 ? '0' : '') + num; // Function to pad with leading zeros
 
       // time formats
-      const datetime =
-        'Webhook Time: ' +
-        currentdate.getFullYear() +
-        '-' +
-        pad(currentdate.getMonth() + 1) +
-        '-' +
-        pad(currentdate.getDate()) +
-        ' @ ' +
-        pad(currentdate.getHours()) +
-        ':' +
-        pad(currentdate.getMinutes()) +
-        ':' +
-        pad(currentdate.getSeconds());
-
-      const excelTime =
-        currentdate.getFullYear() +
-        '-' +
-        pad(currentdate.getMonth() + 1) +
-        '-' +
-        pad(currentdate.getDate()) +
-        ' ' +
-        pad(currentdate.getHours()) +
-        ':' +
-        pad(currentdate.getMinutes()) +
-        ':' +
-        pad(currentdate.getSeconds());
-
       const excelDate =
         currentdate.getFullYear() +
         '-' +
         pad(currentdate.getMonth() + 1) +
         '-' +
         pad(currentdate.getDate());
+
+      const excelTime2 =
+        pad(currentdate.getHours()) +
+        ':' +
+        pad(currentdate.getMinutes()) +
+        ':' +
+        pad(currentdate.getSeconds());
+
+      const excelTime = excelDate + ' ' + excelTime2;
+
+      const datetime = 'Webhook Time: ' + excelDate + ' @ ' + excelTime2;
 
       // Email configuration
       const mailOptions = {
@@ -259,7 +243,7 @@ app.post(
       });
 
       // Send the email
-      await new Promise((resolve, reject) => {
+      const emailSendingPromise = new Promise((resolve, reject) => {
         transporter.sendMail(mailOptions, (err, info) => {
           if (err) {
             console.error(err);
@@ -270,6 +254,62 @@ app.post(
           }
         });
       });
+      const google_auth = await auth.getClient();
+      let emailArray = [];
+
+      if (
+        requestPurposeText === 'Create Account' ||
+        requestPurposeText === 'Access to Project (only for Existing Accounts)'
+      ) {
+        const response = await sheets.spreadsheets.values.get({
+          auth: google_auth,
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Accounts SMT-Request!AA2:AA',
+        });
+        emailArray = await response.data.values;
+      }
+
+      let userRoleTextRemark = '';
+      let SMT_Pass_Gate = false;
+      switch (requestPurposeText) {
+        case 'Create Account':
+          if (emailArray.includes(optimusEmailText)) {
+            userRoleTextRemark =
+              '(Auto Detection) Existing user with additional user role (Do not remove any current user role)';
+          } else {
+            userRoleTextRemark = 'Account creation and assign user role';
+          }
+          SMT_Pass_Gate = true;
+          break;
+        case 'Access to Project (only for Existing Accounts)':
+          if (emailArray.includes(optimusEmailText)) {
+            userRoleTextRemark =
+              'Existing user with additional user role (Do not remove any current user role)';
+          } else {
+            userRoleTextRemark =
+              '(Auto Detection) Account creation and assign user role';
+          }
+          SMT_Pass_Gate = true;
+          break;
+        case 'Unlock Account/Reset Password':
+          userRoleTextRemark = 'To unlock user account and assign user role';
+          SMT_Pass_Gate = true;
+          break;
+        case 'Disable Account':
+          userRoleTextRemark = 'To remove user role and disable account';
+          SMT_Pass_Gate = true;
+          break;
+        case 'Unpair PingID from old device':
+          userRoleTextRemark = 'To help unpair PingID from old device';
+          SMT_Pass_Gate = false;
+          break;
+        case 'Change OTP mobile number':
+          userRoleTextRemark = 'To help change OTP mobile number';
+          SMT_Pass_Gate = false;
+          break;
+        default:
+          break;
+      }
 
       // Define the values to write for Acct Request FormSG tab
       const valuesToWriteAcct = [
@@ -309,39 +349,9 @@ app.post(
           emailText,
           companyText,
           projectText,
-          '',
+          userRoleTextRemark,
         ],
       ];
-      let userRoleTextRemark = '';
-      let SMT_Pass_Gate = false;
-      switch (requestPurposeText) {
-        case 'Create Account':
-          userRoleTextRemark = 'Account creation and assign user role';
-          SMT_Pass_Gate = true;
-          break;
-        case 'Access to Project (only for Existing Accounts)':
-          userRoleTextRemark =
-            'Existing user with additional user role (Do not remove any current user role)';
-          SMT_Pass_Gate = true;
-          break;
-        case 'Unlock Account/Reset Password':
-          userRoleTextRemark = 'To unlock user account and assign user role';
-          SMT_Pass_Gate = true;
-          break;
-        case 'Disable Account':
-          userRoleTextRemark = 'To remove user role and disable account';
-          SMT_Pass_Gate = true;
-          break;
-        case 'Unpair PingID from old device':
-          SMT_Pass_Gate = false;
-          break;
-        case 'Change OTP mobile number':
-          SMT_Pass_Gate = false;
-          break;
-        default:
-          break;
-      }
-      const google_auth = await auth.getClient();
 
       // Create the request to update the values for Acct Request FormSG tab
       sheets.spreadsheets.values.append({
@@ -399,6 +409,15 @@ app.post(
       }
 
       // console.log('Values updated successfully:', appendRequest.data);
+      emailSendingPromise
+        .then((result) => {
+          // Handle the result if needed
+          // console.log('Result:', result);
+        })
+        .catch((error) => {
+          // Handle errors if the promise is rejected
+          console.error('Error:', error);
+        });
 
       return res.status(200).send({ message: 'See console for submission!' });
     } else {
