@@ -412,10 +412,10 @@ app.post(
       }
 
       // console.log('Values updated successfully:', appendRequest.data);
-      emailSendingPromise
+      await emailSendingPromise
         .then((result) => {
           // Handle the result if needed
-          // console.log('Result:', result);
+          console.log('Email sent successfully');
         })
         .catch((error) => {
           // Handle errors if the promise is rejected
