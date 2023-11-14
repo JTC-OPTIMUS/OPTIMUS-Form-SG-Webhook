@@ -265,10 +265,10 @@ app.post(
         get_emailArray_response = await sheets.spreadsheets.values.get({
           auth: google_auth,
           spreadsheetId: SPREADSHEET_ID,
-          range: 'Accounts SMT-Request!AA2:AA',
+          range: 'Accounts SMT-Request!AA:AA',
         });
         emailArray = await get_emailArray_response.data.values;
-        console.log(emailArray);
+        // console.log(emailArray); 
       }
 
       let userRoleTextRemark = '';
