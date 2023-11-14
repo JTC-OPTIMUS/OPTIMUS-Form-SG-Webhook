@@ -357,7 +357,7 @@ app.post(
       ];
 
       // Create the request to update the values for Acct Request FormSG tab
-      sheets.spreadsheets.values.append({
+      const sheet_response1 = sheets.spreadsheets.values.append({
         auth: google_auth,
         spreadsheetId: SPREADSHEET_ID,
         range: `Acct Request FormSG!A6`,
@@ -369,7 +369,7 @@ app.post(
       });
 
       // Create the request to update the values for Accounts SMT-Request
-      sheets.spreadsheets.values.append({
+      const sheet_response2 = sheets.spreadsheets.values.append({
         auth: google_auth,
         spreadsheetId: SPREADSHEET_ID,
         range: `Accounts SMT-Request!A3`,
@@ -379,6 +379,8 @@ app.post(
           values: valuesToWriteAccountSMTRequest,
         },
       });
+
+      let sheet_response3;
 
       if (SMT_Pass_Gate) {
         // Define the values to write for SMT-Request
@@ -399,10 +401,10 @@ app.post(
         ];
 
         // Create the request to update the values for SMT-Request
-        sheets.spreadsheets.values.append({
+        sheet_response3 = sheets.spreadsheets.values.append({
           auth: google_auth,
           spreadsheetId: SMT_SPREADSHEET_ID,
-          range: `SMT_Account!A2`,
+          range: `SMT_Account!A3`,
           valueInputOption: 'RAW',
           insertDataOption: 'INSERT_ROWS',
           resource: {
@@ -411,15 +413,18 @@ app.post(
         });
       }
 
-      // console.log('Values updated successfully:', appendRequest.data);
-      await emailSendingPromise
-        .then((result) => {
-          // Handle the result if needed
-          console.log('Email sent successfully');
+      // Wait for all the requests to complete before ending the function
+      await Promise.all([
+        sheet_response1,
+        sheet_response2,
+        sheet_response3,
+        emailSendingPromise,
+      ])
+        .then(() => {
+          console.log('Submission successful!')
         })
-        .catch((error) => {
-          // Handle errors if the promise is rejected
-          console.error('Error:', error);
+        .catch((err) => {
+          console.log(err);
         });
 
       return res.status(200).send({ message: 'See console for submission!' });
