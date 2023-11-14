@@ -127,7 +127,7 @@ app.post(
 
       // Check if Nodemailer is installed
       try {
-        console.log(require.resolve('nodemailer'));
+        require.resolve('nodemailer')
       } catch (e) {
         console.error('nodemailer is not found');
         process.exit(e.code);
@@ -341,10 +341,10 @@ app.post(
       }
 
       // Create the request to update the values for Acct Request FormSG tab
-      await sheets.spreadsheets.values.append({
+      sheets.spreadsheets.values.append({
         auth: await auth.getClient(),
         spreadsheetId: SPREADSHEET_ID,
-        range: `Acct Request FormSG!A7`,
+        range: `Acct Request FormSG!7:7`,
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         resource: {
@@ -353,10 +353,10 @@ app.post(
       });
 
       // Create the request to update the values for Accounts SMT-Request
-      await sheets.spreadsheets.values.append({
+      sheets.spreadsheets.values.append({
         auth: await auth.getClient(),
         spreadsheetId: SPREADSHEET_ID,
-        range: `Accounts SMT-Request!A3`,
+        range: `Accounts SMT-Request!3:3`,
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         resource: {
@@ -382,7 +382,7 @@ app.post(
         ];
 
         // Create the request to update the values for SMT-Request
-        await sheets.spreadsheets.values.append({
+        sheets.spreadsheets.values.append({
           auth: await auth.getClient(),
           spreadsheetId: SMT_SPREADSHEET_ID,
           range: `SMT_Account!A3`,
