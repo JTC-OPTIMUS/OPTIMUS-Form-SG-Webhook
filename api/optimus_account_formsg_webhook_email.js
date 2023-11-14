@@ -275,7 +275,7 @@ app.post(
       let SMT_Pass_Gate = false;
       switch (requestPurposeText) {
         case 'Create Account':
-          if (emailArray.includes(optimusEmailText)) {
+          if (emailArray.includes(optimusEmailText.toLowerCase())) {
             userRoleTextRemark =
               '(Auto Detection) Existing user with additional user role (Do not remove any current user role)';
           } else {
@@ -285,7 +285,7 @@ app.post(
           SMT_Pass_Gate = true;
           break;
         case 'Access to Project (only for Existing Accounts)':
-          if (emailArray.includes(optimusEmailText)) {
+          if (emailArray.includes(optimusEmailText.toLowerCase())) {
             userRoleTextRemark =
               'Existing user with additional user role (Do not remove any current user role)';
           } else {
