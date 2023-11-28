@@ -24,7 +24,6 @@ const ccList = [
   'nikki_yong@jtc.gov.sg',
   'bryan_ong@jtc.gov.sg',
   'yve_xu@jtc.gov.sg',
-  'xianghui556@gmail.com',
 ];
 const { google } = require('googleapis');
 const sheets = google.sheets('v4');
