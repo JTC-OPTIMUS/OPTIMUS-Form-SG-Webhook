@@ -5,6 +5,77 @@ const app = express();
 
 // Import the FormSG SDK and initialize it
 const formsg = require('@opengovsg/formsg-sdk')();
+const axios = require('axios');
+
+function getRandomInt() {
+  return Math.floor(Math.random() * 4) + 1;
+}
+
+async function get_joke_of_the_day() {
+  const url1 = 'https://api.api-ninjas.com/v1/jokes';
+  const url2 = 'https://api.api-ninjas.com/v1/quotes';
+  const url3 = 'https://api.api-ninjas.com/v1/riddles';
+  const url4 = 'https://api.api-ninjas.com/v1/trivia';
+  let url;
+  const randomInt = parseInt(getRandomInt());
+  switch (randomInt) {
+    case 1:
+      url = url1;
+      break;
+    case 2:
+      url = url2;
+      break;
+    case 3:
+      url = url3;
+      break;
+    case 4:
+      url = url4;
+      break;
+    default:
+      url = url1;
+  }
+  const headers = {
+    'Content-type': 'application/json',
+    'X-Api-Key': 'fX2y4Gqh0rq7wNDlTdHyBQ==wEHLoluYDHF9yWXW',
+  };
+  let replies;
+  await axios
+    .get(url, { headers })
+    .then((response) => {
+      console.log(randomInt);
+      console.log(response.data[0]);
+      switch (randomInt) {
+        case 1:
+          replies = 'Joke: ' + response.data[0].joke;
+          break;
+        case 2:
+          replies =
+            'Quote: "' +
+            response.data[0].quote +
+            '" - ' +
+            response.data[0].author;
+          break;
+        case 3:
+          replies =
+            'Riddle: ' +
+            response.data[0].question +
+            ' =-= ' +
+            response.data[0].answer;
+          break;
+        case 4:
+          replies =
+            'Trivia: ' +
+            response.data[0].question +
+            ' =-= ' +
+            response.data[0].answer;
+          break;
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching joke:', error.message);
+    });
+  return replies;
+}
 
 // Define the URL where this webhook is hosted
 const POST_URI =
@@ -23,7 +94,12 @@ function capitalizeFirstLetter(word) {
 
 // List of email recipients
 const mailList = ['al-basra_al-bihaqi@jtc.gov.sg', 'ang_jin_leong@jtc.gov.sg'];
-const ccList = ['siti_nurhazirah_mokmin@jtc.gov.sg', 'nikki_yong@jtc.gov.sg', 'bryan_ong@jtc.gov.sg', 'yve_xu@jtc.gov.sg'];
+const ccList = [
+  'siti_nurhazirah_mokmin@jtc.gov.sg',
+  'nikki_yong@jtc.gov.sg',
+  'bryan_ong@jtc.gov.sg',
+  'yve_xu@jtc.gov.sg',
+];
 
 // Define a POST route for the webhook
 app.post(
@@ -134,6 +210,24 @@ app.post(
         ':' +
         pad(currentdate.getSeconds());
 
+      const getJoke = await get_joke_of_the_day();
+      let footerEntertainment;
+      if (getJoke.includes('=-=')) {
+        splitJoke = getJoke.split('=-=');
+        footerEntertainment = `
+        <div style="border-top: 2px solid black; margin-top: 5px"><span>${splitJoke[0]}</span></div>
+        <div style="height: 50px; background-color: gray; text-align: center; color: gray; display: flex; align-items: center; justify-content: center;"
+             onmouseover="this.style.color='white'"
+             onmouseout="this.style.color='gray'">
+            ${splitJoke[1]}
+        </div>`;
+      }
+      else {
+        footerEntertainment = `
+        <div style="border-top: 2px solid black; margin-top: 5px"><span>${getJoke}</span></div>
+        `;
+      }
+
       // Email configuration
       const mailOptions = {
         from: 'jtcoptimus@gmail.com',
@@ -207,7 +301,8 @@ app.post(
                 </tr>
             </table>
         </div>
-        <div style="border-top: 2px solid black; text-align: end; margin-top: 5px"><span>Brought to you by the DBE team</span></div>
+        ${footerEntertainment}
+        <div style="text-align: end; margin-top: 5px"><span>Brought to you by the DBE team</span></div>
       </div>`,
       };
 
