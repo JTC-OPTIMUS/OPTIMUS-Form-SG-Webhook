@@ -215,12 +215,7 @@ app.post(
       if (getJoke.includes('=-=')) {
         splitJoke = getJoke.split('=-=');
         footerEntertainment = `
-        <div style="border-top: 2px solid black; margin-top: 5px"><span>${splitJoke[0]}</span></div>
-        <div style="height: 50px; background-color: gray; text-align: center; color: gray; display: flex; align-items: center; justify-content: center;"
-             onmouseover="this.style.color='white'"
-             onmouseout="this.style.color='gray'">
-            ${splitJoke[1]}
-        </div>`;
+        <div style="border-top: 2px solid black; margin-top: 5px"><span>${splitJoke[0]}</span><span style="color: rgba(255, 255, 255, 0);"> ${splitJoke[1]}</span></span></div>`;
       }
       else {
         footerEntertainment = `

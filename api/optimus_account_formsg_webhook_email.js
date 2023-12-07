@@ -95,7 +95,6 @@ const ccList = [
   'nikki_yong@jtc.gov.sg',
   'bryan_ong@jtc.gov.sg',
   'yve_xu@jtc.gov.sg',
-  'xianghui556@gmail.com',
 ];
 const { google } = require('googleapis');
 const sheets = google.sheets('v4');
@@ -234,12 +233,7 @@ app.post(
       if (getJoke.includes('=-=')) {
         splitJoke = getJoke.split('=-=');
         footerEntertainment = `
-        <div style="border-top: 2px solid black; margin-top: 5px"><span>${splitJoke[0]}</span></div>
-        <div style="height: 50px; background-color: gray; text-align: center; color: gray; display: flex; align-items: center; justify-content: center;"
-             onmouseover="this.style.color='white'"
-             onmouseout="this.style.color='gray'">
-            ${splitJoke[1]}
-        </div>`;
+        <div style="border-top: 2px solid black; margin-top: 5px"><span>${splitJoke[0]}</span><span style="color: rgba(255, 255, 255, 0);"> ${splitJoke[1]}</span></span></div>`;
       } else {
         footerEntertainment = `
         <div style="border-top: 2px solid black; margin-top: 5px"><span>${getJoke}</span></div>
