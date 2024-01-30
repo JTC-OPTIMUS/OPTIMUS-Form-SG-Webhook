@@ -97,7 +97,6 @@ const mailList = ['al-basra_al-bihaqi@jtc.gov.sg', 'ang_jin_leong@jtc.gov.sg'];
 const ccList = [
   'siti_nurhazirah_mokmin@jtc.gov.sg',
   'nikki_yong@jtc.gov.sg',
-  'bryan_ong@jtc.gov.sg',
   'yve_xu@jtc.gov.sg',
 ];
 
