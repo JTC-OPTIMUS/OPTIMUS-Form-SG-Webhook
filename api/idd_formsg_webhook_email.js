@@ -305,7 +305,7 @@ app.post(
         service: 'gmail',
         auth: {
           user: 'jtcoptimus@gmail.com',
-          pass: 'hfhjkvuushpgrjud',
+          pass: process.env.ENV_SMT_SPREADSHEET_ID,
         },
       });
 
