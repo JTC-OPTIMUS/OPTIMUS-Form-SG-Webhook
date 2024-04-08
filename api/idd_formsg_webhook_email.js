@@ -98,7 +98,6 @@ const ccList = [
   'siti_nurhazirah_mokmin@jtc.gov.sg',
   'nikki_yong@jtc.gov.sg',
   'yve_xu@jtc.gov.sg',
-  'xianghui556@gmail.com',
 ];
 
 // Define a POST route for the webhook
