@@ -307,7 +307,7 @@ app.post(
         service: 'gmail',
         auth: {
           user: 'jtcoptimus@gmail.com',
-          pass: process.env.EMAIL_KEY,
+          pass: 'dfpsqxxumiwrmtty',
         },
       });
 
