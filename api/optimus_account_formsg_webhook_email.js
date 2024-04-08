@@ -12,8 +12,6 @@ function getRandomInt() {
   return Math.floor(Math.random() * 4) + 1;
 }
 
-console.log(process.env.ENV_SMT_SPREADSHEET_ID);
-
 async function get_joke_of_the_day() {
   const url1 = 'https://api.api-ninjas.com/v1/jokes';
   const url2 = 'https://api.api-ninjas.com/v1/quotes';
@@ -309,7 +307,7 @@ app.post(
         service: 'gmail',
         auth: {
           user: 'jtcoptimus@gmail.com',
-          pass: process.env.ENV_SMT_SPREADSHEET_ID,
+          pass: process.env.EMAIL_KEY,
         },
       });
 
